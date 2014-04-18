@@ -12,6 +12,6 @@ class Album {
     static constraints = {
 
         // force the user to provide a title
-        title(blank: false)
+        title(blank: false, unique: true)
     }
 }

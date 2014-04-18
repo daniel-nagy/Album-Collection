@@ -7,11 +7,12 @@ class UrlMappings {
             }
         }
         
-        // CRUD
+        // url mappings for creat and list
         "/album"(controller: "album"){
             action = [POST: "create", GET: "list"]
         }
-
+        
+		// url mappings for retrieve, update, and destroy
         "/album/$title"(controller: "album"){
         	action = [GET: "retrieve", PUT: "update", DELETE: "destroy"]
         }
