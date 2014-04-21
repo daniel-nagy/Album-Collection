@@ -1,7 +1,9 @@
 package album.collection
 
-//********************************************
-// class for creating albums in a collection
+
+/** 
+ * Class for creating albums in a collection
+ */
 
 class Album {
     String  title
@@ -10,8 +12,8 @@ class Album {
     int     year
 
     static constraints = {
-
-        // force the user to provide a title
+        
+        /* force the user to provide a unique title */
         title(blank: false, unique: true)
     }
 }

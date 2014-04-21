@@ -4,7 +4,7 @@ class BootStrap {
 
     def init = { servletContext ->
 
-        // creating test data
+        /* creating test data */
         if (!Album.count()) {
             new Album(
                 title   : "Magnetic",

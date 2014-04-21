@@ -1,134 +1,120 @@
 package album.collection
 
-// create JSON objects
+/* create JSON objects */
 import grails.converters.JSON
+
+/* enumeration of HTTP status codes. */
+import org.springframework.http.HttpStatus
+
+/* catch database exceptions */
+import org.springframework.dao.DataIntegrityViolationException
+
+/**
+ * Handles CRUD opperations invoked by REST calls from the client.
+ * <p>
+ * If you are referencing this file please realize this is a work
+ * in progress and is not bulletproof and can be improved.
+ */
 
 class AlbumController {
     
-    // **********************************************************************************
-    // album not found
+    /* Creating an instance of the RestErrorController class. */
+    def exception = new RestErrorController()
     
-    private def sendNotFoundResponse(){
-        response.status = 404
-        def error = "The album ${params.title} was not found."
-        render error
-    }
-    
-    // **********************************************************************************
-    // validation failed
-    
-    private def sendValidationFailedResponse(){
-        response.status = 403
-        def error
-        if(params.title){
-            error = "The album ${params.title} already exists in your colllection."
-        }
-        else{
-            error = "Your album has no title"
-        }
-        render error
-    }
-    
-    // **********************************************************************************
-    // save failed
-    
-    private def sendSaveFailedResponse(){
-        response.status = 500
-        def error = "The album ${params.title} can not be saved."
-        render error
-    }
-    
-    // **********************************************************************************
-    // add an album
+    /**
+     * Creates an album in a users collection.
+     */
     
     def create(){
         def album = new Album(params)
         if(album.validate()){
             if(album.save(flush: true)){
-                response.status = 200
+                response.status = HttpStatus.OK.value
                 render album as JSON
             }
-            else{
-                sendSaveFailedResponse()
-            }
+            else
+                exception.AlbumWriteException("${params.title}")
         }
         else{
-            sendValidationFailedResponse()
+            if(params.title)
+                exception.UniqueAlbumException("${params.title}")
+            
+            exception.AbsentTitleException()
         }
     }
     
-    // **********************************************************************************
-    // list all albums
+    /**
+     * Lists all the albums in a users collection.
+     */
     
     def list(){
-        if(!Album.count()){
-            response.status = 404
-            def error = "No albums in your colection."
-            render error
-        }
+        if(!Album.count())
+            exception.EmptyCollectionException()
+        
         else{
-            response.status = 200
+            response.status = HttpStatus.OK.value
             render Album.list() as JSON
         }
     }
     
-    // **********************************************************************************
-    // find an album
+    /**
+     * Retrieves an album in a users collection
+     */
     
     def retrieve(){
         def album = Album.findByTitle(params.title)
+        
         if(album){
-            response.status = 200
+            response.status = HttpStatus.OK.value
             render album as JSON
         }
-        else{
-            sendNotFoundResponse()
-        }
+        else
+            exception.AlbumDoesNotExistException("${params.title}")
     }
     
-    // **********************************************************************************
-    // update an album
+    /**
+     * Updates an album in a users collection
+     */
     
     def update(){
         def album = Album.findByTitle(params.title)
+        
         if(album){
             album.properties = params
-            if(album.validate()){
-                if(album.save(flush: true)){
-                    response.status = 200
-                    render album as JSON
-                }
-                else{
-                    sendSaveFailedResponse()
-                }
+            
+            if(album.save(flush: true)){
+                response.status = HttpStatus.OK.value
+                render album as JSON
             }
-            else{
-                sendValidationFailedResponse()
-            }
+            else
+                exception.AlbumWriteException("${params.title}")
         }
-        else{
-            sendNotFoundResponse()
-        }
+        else
+            exception.AlbumDoesNotExistException("${params.title}")
     }
     
-    // **********************************************************************************
-    // remove an album
+    /**
+     * Removes an album in a users collection
+     *
+     * @throws DataIntegrityViolationException   Unable to synchronize
+     *                                           with the database.
+     */
     
     def destroy(){
         def album = Album.findByTitle(params.title)
+        
         if(album){
-            try{
+            try {
                 album.delete(flush: true)
-                response.status = 204
+                album.delete(flush: true)
+                response.status = HttpStatus.NO_CONTENT.value
+                render ""
             }
-            catch(Exception exception){
-                response.status = 403
-                def error = "The album ${params.title} could not be removed"
-                render error
+            catch(DataIntegrityViolationException){
+                exception.DataIntegrityViolationException()
             }
         }
-        else{
-            sendNotFoundResponse()
-        }
+        else
+            exception.AlbumDoesNotExistException("${params.title}")
     }
 }
