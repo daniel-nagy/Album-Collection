@@ -3,7 +3,7 @@ package album.collection
 /* create JSON objects */
 import grails.converters.JSON
 
-/* enumeration of HTTP status codes. */
+/* enumeration of HTTP status codes */
 import org.springframework.http.HttpStatus
 
 /* catch database exceptions */
@@ -18,7 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class AlbumController {
     
-    /* Creating an instance of the RestErrorController class. */
+    /* creating an instance of the RestErrorController class */
     def exception = new RestErrorController()
     
     /**
@@ -58,12 +58,11 @@ class AlbumController {
     }
     
     /**
-     * Retrieves an album in a users collection
+     * Retrieves an album in a users collection.
      */
     
     def retrieve(){
         def album = Album.findByTitle(params.title)
-        
         if(album){
             response.status = HttpStatus.OK.value
             render album as JSON
@@ -73,7 +72,7 @@ class AlbumController {
     }
     
     /**
-     * Updates an album in a users collection
+     * Updates an album in a users collection.
      */
     
     def update(){
@@ -94,7 +93,7 @@ class AlbumController {
     }
     
     /**
-     * Removes an album in a users collection
+     * Removes an album in a users collection.
      *
      * @throws DataIntegrityViolationException   Unable to synchronize
      *                                           with the database.
@@ -105,7 +104,6 @@ class AlbumController {
         
         if(album){
             try {
-                album.delete(flush: true)
                 album.delete(flush: true)
                 response.status = HttpStatus.NO_CONTENT.value
                 render ""

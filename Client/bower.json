@@ -1,0 +1,12 @@
+{
+  "name"                    : "BowerInstaller",
+  "version"                 : "0.0.1",
+  "private"                 : true,
+  "description"             : "Installs angular and bootstrap.",
+  "author"                  : "Daniel Nagy",
+  "dependencies"            : {
+    "angular"               : "*",
+    "angular-mocks"         : "*",
+    "bootstrap"             : "*"
+  }
+}

@@ -2,7 +2,7 @@ package album.collection
 
 
 /** 
- * Class for creating albums in a collection
+ * Class for creating albums in a collection.
  */
 
 class Album {

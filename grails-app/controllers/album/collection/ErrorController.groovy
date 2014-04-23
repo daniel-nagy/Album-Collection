@@ -7,7 +7,7 @@ import grails.converters.JSON
 import org.springframework.http.HttpStatus
 
 /**
- * Here is were we can handel generic error messages
+ * Here is were we can handle generic error messages.
  */ 
 
 class ErrorController {
@@ -36,7 +36,7 @@ class ErrorController {
         def error = new RestError(
             status              : "500 INTERNAL_SERVER_ERROR",
             userMessage         : "You broke the internet.",
-            developerMessage    : "Who the hell knows?",
+            developerMessage    : "The server encountered an unexpected condition.",
             exception           : exception
         )
         render error as JSON

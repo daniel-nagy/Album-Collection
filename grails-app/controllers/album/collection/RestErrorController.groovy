@@ -79,7 +79,7 @@ class RestErrorController{
     /**
      * If POST or PUT fail to write to the database.
      *
-     * @param title  The title of the album attempting to be saved
+     * @param title  The title of the album attempting to be saved.
      */
 
     private void AlbumWriteException(String title) {
@@ -95,8 +95,6 @@ class RestErrorController{
     
     /**
      * If DELETE fails because the client is out of sync with the database.
-     *
-     * @param exception     The exception thrown
      */
 
     private void DataIntegrityViolationException() {
