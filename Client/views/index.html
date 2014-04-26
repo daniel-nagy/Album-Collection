@@ -2,22 +2,28 @@
 <html lang="en" ng-app="albumCollection">
 
   <head>
-    <meta charset="utf-8">
+    
     <title>Album Collection</title>
-    <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+    
   </head>
   
-  <body ng-controller="albumListCtrl">
-    <ul>
-      <li ng-repeat="album in collection">
-        {{album.title}}
-        <p>{{album.artist}} ({{album.year}})</p>
-      </li>
-      </ul>
+  <body>
+    
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div ng-view></div>
+      </div>
+    </div>
+   
   </body>
   
   <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
-  <script type="text/javascript" src="../javascripts/albumController.js"></script>
+  <script type="text/javascript" src="../bower_components/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="../javascripts/app.js"></script>
+  <script type="text/javascript" src="../javascripts/controllers.js"></script>
 
 </html>

@@ -1,0 +1,35 @@
+body {
+  background-color: #f1f1f1;
+}
+
+.page-header {
+  text-align: center;
+}
+
+.input-container {
+  float: right;
+}
+
+.input-container .glyphicon-search {
+  float: right;
+  margin-right: 14px;
+  margin-top: -25px;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background-color: #f1f1f1;  
+}
+
+.thumbnail {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.albums-view {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
