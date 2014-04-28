@@ -15,6 +15,5 @@ albumControllers.controller('albumViewCtrl', ['$scope', '$routeParams', '$http',
     $http.get('http://localhost:8080/Album-Collection/album/' + $routeParams.albumTitle).success(function(data) {
       $scope.album = data;
       console.log('Album retrieved');
-      console.log(data);
     });
 }]);

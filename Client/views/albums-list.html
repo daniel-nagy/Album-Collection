@@ -1,36 +1,13 @@
-<!-- search collection -->
-<div class="form-group col-xs-12 col-sm-12 col-md-12">
-  <h1 class="page-header">My Album Collection</h1>
-  <div class="input-container col-xs-12 col-sm-6 col-md-4">
-    <input class="form-control" placeholder="Search" ng-model="query">
-    <div class="glyphicon glyphicon-search"></div>
-    <select ng-model="orderProp">
-      <option value="title">Album</option>
-      <option value="artist">Artist</option>
-      <option value="genre">Genre</option>
-      <option value="year">Year</option>
-    </select>
-  </div>
-</div>
-
-<!-- album view navigation -->
-<ul class="nav nav-tabs">
-  <li>
-    <a href="#/albums">Album View</a>
-  </li>
-  <li  class="active">
-    <a href="#/albums-list">Table View</a>
-  </li>
-</ul>
+<h1 class="page-header">My Album Collection</h1>
 
 <!-- table display -->
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Album</th>
-      <th>Artist</th> 
-      <th>Year</th>
-      <th>Genre</th>
+      <td>Album</td>
+      <td>Artist</td> 
+      <td>Year</td>
+      <td>Genre</td>
     </tr>
   </thead>
   <tbody>

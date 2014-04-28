@@ -13,6 +13,32 @@
   
   <body>
     
+    <!-- navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        
+        <!-- navigation -->
+        <div class="pull-left col-xs-6 col-sm-6 col-md-6">
+          <a class="glyphicon glyphicon-th navbar-brand" href="#/albums"></a>
+          <a class="glyphicon glyphicon-th-list navbar-brand" href="#/albums-list"></a>
+        </div>
+        
+        <!-- search -->
+        <div class="pull-right col-xs-6 col-sm-6 col-md-6">
+          <form class="navbar-form" role="search">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </nav>
+    
+    <!-- view template -->
     <div class="container-fluid">
       <div class="row-fluid">
         <div ng-view></div>

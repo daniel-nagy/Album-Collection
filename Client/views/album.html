@@ -1,7 +1,21 @@
-<h1 class="page-header">My Album Collection</h1>
-
 <div class="col-xs-12 col-sm-12 col-md-12">
-  <img class="thumbnail col-xs-4 col-sm-4 col-md-4" style="float: right;" ng-src="/images/artwork/{{album.title}}.jpg">
-  <h4>{{album.title}}</h4>
-  <h4>{{album.artist}} ({{album.year}})</h4>
+  <div class="col-xs-4 col-sm-4 col-md-4 albums-view">
+    <img class="thumbnail img-responsive" ng-src="/images/artwork/{{album.title}}.jpg">
+    <big><a>{{album.artist}} ({{album.year}})</a></big>
+  </div>
+  <h1 class="page-header col-xs-8 col-sm-8 col-md-8">{{album.title}}</h1>
+  <div class="col-xs-12 col-sm-8 col-md-8">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>#</td>
+          <td>Title</td> 
+        </tr>
+      </thead>
+      <tr ng-repeat="track in album.tracks">
+        <td>{{$index + 1}}</td>
+        <td>{{track}}</td>
+      </tr>
+    </table>
+  </div>
 </div>

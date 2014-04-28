@@ -1,25 +1,10 @@
 body {
-  background-color: #f1f1f1;
+  background-color: #F9F8F4;
+  color: #424242;
 }
 
 .page-header {
   text-align: center;
-}
-
-.input-container {
-  float: right;
-}
-
-.input-container .glyphicon-search {
-  float: right;
-  margin-right: 14px;
-  margin-top: -25px;
-}
-
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-  background-color: #f1f1f1;  
 }
 
 .thumbnail {
@@ -32,4 +17,19 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.navbar .navbar-form {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: none;
+}
+
+a {
+  color: #424242;
+}
+
+a:hover {
+  color: #1DAEE4;
+  text-decoration: none;
 }
