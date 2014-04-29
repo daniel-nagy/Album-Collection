@@ -8,6 +8,8 @@
     "angular"               : "*",
     "angular-mocks"         : "*",
     "angular-route"         : "*",
+    "angular-resource"      : "*",
+    "angular-animate"       : "*",
     "bootstrap"             : "*"
   }
 }

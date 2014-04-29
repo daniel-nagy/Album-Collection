@@ -12,33 +12,37 @@ import org.springframework.http.HttpStatus
 
 class ErrorController {
 
-    /**
-     * Generic 404 error. 
-     */
+  /**
+   * Generic 404 error. 
+   */
+  
+  def error404() {
     
-    def error404() { 
-        def exception = request.exception?.cause?.message ?: "Unknown exception thrown"
-        def error = new RestError(
-            status              : "404 NOT_FOUND",
-            userMessage         : "Are you in the right place?.",
-            developerMessage    : "Unobtainable resource.",
-            exception           : exception
-        )
-        render error as JSON
-    }
+    def exception = request.exception?.cause?.message ?: "Unknown exception thrown"
     
-    /**
-     * Generic 500 error. Your guess is as good as mine.
-     */
+    def error = new RestError(
+      status              : "404 NOT_FOUND",
+      userMessage         : "Are you in the right place?.",
+      developerMessage    : "Unobtainable resource.",
+      exception           : exception
+    )
+    render error as JSON
+  }
+  
+  /**
+   * Generic 500 error. Your guess is as good as mine.
+   */
+  
+  def error500() {
     
-    def error500() {
-        def exception = request.exception?.cause?.message ?: "Unknown exception thrown"
-        def error = new RestError(
-            status              : "500 INTERNAL_SERVER_ERROR",
-            userMessage         : "You broke the internet.",
-            developerMessage    : "The server encountered an unexpected condition.",
-            exception           : exception
-        )
-        render error as JSON
-    }
+    def exception = request.exception?.cause?.message ?: "Unknown exception thrown"
+    
+    def error = new RestError(
+      status              : "500 INTERNAL_SERVER_ERROR",
+      userMessage         : "You broke the internet.",
+      developerMessage    : "The server encountered an unexpected condition.",
+      exception           : exception
+    )
+    render error as JSON
+  }
 }

@@ -1,9 +1,20 @@
 body {
   background-color: #F9F8F4;
   color: #424242;
+  padding-top: 60px;
+}
+
+a {
+  color: #008EC4;
+}
+
+a:hover {
+  color: #1DAEE4;
+  text-decoration: none;
 }
 
 .page-header {
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -19,17 +30,27 @@ body {
   text-overflow: ellipsis;
 }
 
+/* navbar */
+
 .navbar .navbar-form {
   padding-top: 0px;
   padding-bottom: 0px;
   border: none;
 }
 
-a {
-  color: #424242;
+.navbar-default {
+  background-color: #424242;
+  border-color: #424242;
 }
 
-a:hover {
+.navbar-default .navbar-brand {
+  color: #F9F8F4;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
   color: #1DAEE4;
-  text-decoration: none;
+}
+
+.navbar-default .navbar-text {
+  color: #F9F8F4;
 }

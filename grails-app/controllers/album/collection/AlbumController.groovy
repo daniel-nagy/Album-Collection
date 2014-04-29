@@ -17,102 +17,114 @@ import org.springframework.dao.DataIntegrityViolationException
  */
 
 class AlbumController {
+  
+  /* creating an instance of the RestErrorController class */
+  def exception = new RestErrorController()
+  
+  /**
+   * Creates an album in a users collection.
+   */
+  
+  def create() {
     
-    /* creating an instance of the RestErrorController class */
-    def exception = new RestErrorController()
+    def album = new Album(params)
     
-    /**
-     * Creates an album in a users collection.
-     */
-    
-    def create(){
-        def album = new Album(params)
-        if(album.validate()){
-            if(album.save(flush: true)){
-                response.status = HttpStatus.OK.value
-                render album as JSON
-            }
-            else
-                exception.AlbumWriteException("${params.title}")
-        }
-        else{
-            if(params.title)
-                exception.UniqueAlbumException("${params.title}")
-            
-            exception.AbsentTitleException()
-        }
+    if(album.validate()) {
+      if(album.save(flush: true)) {
+        response.status = HttpStatus.OK.value
+        render album as JSON
+      }
+      else {
+        exception.AlbumWriteException("${params.title}")
+      }
     }
-    
-    /**
-     * Lists all the albums in a users collection.
-     */
-    
-    def list(){
-        if(!Album.count())
-            exception.EmptyCollectionException()
-        
-        else{
-            response.status = HttpStatus.OK.value
-            render Album.list() as JSON
-        }
+    else {
+      if(params.title) {
+        exception.UniqueAlbumException("${params.title}")
+      }
+      exception.AbsentTitleException()
     }
+  }
+  
+  /**
+   * Lists all the albums in a users collection.
+   */
+  
+  def list() {
     
-    /**
-     * Retrieves an album in a users collection.
-     */
-    
-    def retrieve(){
-        def album = Album.findByTitle(params.title)
-        if(album){
-            response.status = HttpStatus.OK.value
-            render album as JSON
-        }
-        else
-            exception.AlbumDoesNotExistException("${params.title}")
+    if(!Album.count()) {
+      exception.EmptyCollectionException()
     }
-    
-    /**
-     * Updates an album in a users collection.
-     */
-    
-    def update(){
-        def album = Album.findByTitle(params.title)
-        
-        if(album){
-            album.properties = params
-            
-            if(album.save(flush: true)){
-                response.status = HttpStatus.OK.value
-                render album as JSON
-            }
-            else
-                exception.AlbumWriteException("${params.title}")
-        }
-        else
-            exception.AlbumDoesNotExistException("${params.title}")
+    else {
+      response.status = HttpStatus.OK.value
+      render Album.list() as JSON
     }
+  }
+  
+  /**
+   * Retrieves an album in a users collection.
+   */
+  
+  def retrieve() {
     
-    /**
-     * Removes an album in a users collection.
-     *
-     * @throws DataIntegrityViolationException   Unable to synchronize
-     *                                           with the database.
-     */
+    def album = Album.findByTitle(params.title)
     
-    def destroy(){
-        def album = Album.findByTitle(params.title)
-        
-        if(album){
-            try {
-                album.delete(flush: true)
-                response.status = HttpStatus.NO_CONTENT.value
-                render ""
-            }
-            catch(DataIntegrityViolationException){
-                exception.DataIntegrityViolationException()
-            }
-        }
-        else
-            exception.AlbumDoesNotExistException("${params.title}")
+    if(album) {
+      response.status = HttpStatus.OK.value
+      render album as JSON
     }
+    else {
+      exception.AlbumDoesNotExistException("${params.title}")
+    }
+  }
+
+  /**
+   * Updates an album in a users collection.
+   */
+
+  def update() {
+    
+    def album = Album.findByTitle(params.title)
+    
+    if(album) {
+      album.properties = params
+      
+      if(album.save(flush: true)) {
+        response.status = HttpStatus.OK.value
+        render album as JSON
+      }
+      else {
+        exception.AlbumWriteException("${params.title}")
+      }
+    }
+    else {
+      exception.AlbumDoesNotExistException("${params.title}")
+    }
+  }
+
+  /**
+   * Removes an album in a users collection.
+   *
+   * @throws DataIntegrityViolationException   Unable to synchronize
+   *                                           with the database.
+   */
+
+  def destroy() {
+    
+    def album = Album.findByTitle(params.title)
+    
+    if(album) {
+      try {
+        album.delete(flush: true)
+        response.status = HttpStatus.NO_CONTENT.value
+        render ""
+      }
+      catch(DataIntegrityViolationException) {
+        exception.DataIntegrityViolationException()
+      }
+    }
+    else {
+      exception.AlbumDoesNotExistException("${params.title}")
+    }
+  }
 }

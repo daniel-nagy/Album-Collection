@@ -1,19 +1,31 @@
 var albumControllers = angular.module('albumControllers', []);
 
-albumControllers.controller('albumsViewCtrl', ['$scope', '$http',
-  function($scope, $http) {
-    $http.get('http://localhost:8080/Album-Collection/album').success(function(data) {
-      $scope.collection = data;
-      console.log('Albums Retrieved.');
-    });
-  
-  $scope.orderProp = 'title';
-}]);
+/* high level (ngResource) */
 
-albumControllers.controller('albumViewCtrl', ['$scope', '$routeParams', '$http',
-  function($scope, $routeParams, $http) {
-    $http.get('http://localhost:8080/Album-Collection/album/' + $routeParams.albumTitle).success(function(data) {
-      $scope.album = data;
-      console.log('Album retrieved');
+// query
+albumControllers.controller('albumCollectionCtrl', ['$scope', 'Albums',
+  function($scope, Albums) {
+    $scope.collection = Albums.query();
+    $scope.orderProp = 'artist';
+    console.log('Albums retrieved');
+  }
+]);
+
+// get
+albumControllers.controller('albumDetailCtrl', ['$scope', '$routeParams', 'Albums',
+  function($scope, $routeParams, Albums) {
+    $scope.album = Albums.get({albumTitle: $routeParams.albumTitle});
+    console.log('Album retrieved');
+  }
+]);
+
+// delete
+albumControllers.controller('albumRemoveCtrl', ['$scope', '$routeParams', '$location', 'Albums',
+  function($scope, $routeParams, $location, Albums) {
+    Albums.delete({albumTitle: $routeParams.albumTitle}, function() {
+      $location.path('/albums');
     });
-}]);
+    
+    console.log('Album removed');
+  }
+]);

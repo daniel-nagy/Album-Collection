@@ -5,6 +5,7 @@ package album.collection
  */
 
 class Album {
+
   String    title
   String    artist
   String    genre

@@ -1,29 +1,30 @@
+/* modules dependencies */
 var albumCollection = angular.module('albumCollection', [
   'ngRoute',
-  'albumControllers'
+  'albumControllers',
+  'albumServices'
+  /* 'albumAnimations' */
 ]);
 
-albumCollection.config(['$httpProvider',
-  function($httpProvider) {
-    $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  }
-]);
-
+/* routes (ngRoute) */
 albumCollection.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/albums', {
         templateUrl : 'albums.html',
-        controller  : 'albumsViewCtrl'
+        controller  : 'albumCollectionCtrl'
       }).
       when('/albums-list', {
         templateUrl : 'albums-list.html',
-        controller  : 'albumsViewCtrl'
+        controller  : 'albumCollectionCtrl'
       }).
       when('/albums/:albumTitle', {
         templateUrl : 'album.html',
-        controller  : 'albumViewCtrl'
+        controller  : 'albumDetailCtrl'
+      }).
+      when('/albums/:albumTitle/remove', {
+        templateUrl : 'album.html',
+        controller  : 'albumRemoveCtrl'
       }).
       otherwise({
         redirectTo  : '/albums'
