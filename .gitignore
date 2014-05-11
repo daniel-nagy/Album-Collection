@@ -5,8 +5,8 @@
 Album-Collection-grailsPlugins.iml
 Album-Collection.iml
 application.properties
-grailssw
-grails.bat
+grailsw
+grailsw.bat
 npm-debug.log
 server/classes
 server/lib
