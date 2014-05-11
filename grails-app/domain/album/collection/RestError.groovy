@@ -1,8 +1,6 @@
 package album.collection
 
-/** 
- * Class for creating REST errors to send back to the client.
- */
+/* class for creating REST errors to send back to the client */
 
 public class RestError {
 
@@ -11,10 +9,16 @@ public class RestError {
   String  developerMessage
   String  exception
   
-  /* default constructor */
+  /* 
+   * The following is unessecary becuase the access 
+   * control is set to public, this is just practice
+   * with the syntax.
+   */
+  
+  // default constructor
   public RestError() {}
   
-  /* constructor */
+  // constructor
   public RestError(String status, String userMessage, String developerMessage, String exception) {
     this.status             = status
     this.userMessage        = userMessage
@@ -22,7 +26,7 @@ public class RestError {
     this.exception          = exception
   }
   
-  /* mutators */
+  // mutators
   public void setStatus(String status) {
     this.status = status
   }
@@ -39,7 +43,7 @@ public class RestError {
     this.exception = exception
   }
   
-  /* accessors */
+  // accessors
   public String getStatus() {
     return this.status
   }

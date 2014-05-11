@@ -5,6 +5,7 @@ class BootStrap {
   def init = { servletContext ->
     
     /* creating test data */
+    
     if (!Album.count()) {
       new Album(
         title   : "Magnetic",
@@ -52,21 +53,21 @@ class BootStrap {
         artist  : "Incubus",
         genre   : "Alternative Rock",
         tracks  : [
-          // "Quicksand",
-          // "A Kiss to Send Us Off",
-          // "Dig",
-          // "Anna Molly",
-          // "Love Hurts",
-          // "Light Grenades",
-          // "Earth to Bella (Part I)",
-          // "Oil and Water",
-          // "Diamonds and Coal",
-          // "Rogues",
-          // "Paper Shoes",
-          // "Pendulous Threads",
-          // "Earth to Bella (Part II)",
-          // "Punchdrunk",
-          // "Look Alive"
+          "Quicksand",
+          "A Kiss to Send Us Off",
+          "Dig",
+          "Anna Molly",
+          "Love Hurts",
+          "Light Grenades",
+          "Earth to Bella (Part I)",
+          "Oil and Water",
+          "Diamonds and Coal",
+          "Rogues",
+          "Paper Shoes",
+          "Pendulous Threads",
+          "Earth to Bella (Part II)",
+          "Punchdrunk",
+          "Look Alive"
         ],
         year    : 2006
       ).save(failOnError: true)
@@ -97,19 +98,19 @@ class BootStrap {
         artist  : "Awolnation",
         genre   : "Electronic Rock",
         tracks  : [
-          // "Megalithic Symphony",
-          // "Some Sort of Creature",
-          // "Soul Wars",
-          // "Jumping on My Shoulders",
-          // "Burn It Down",
-          // "Guilty Filthy Soul",
-          // "Kill Your Heroes",
-          // "My Nightmare's Dream",
-          // "Sail",
-          // "Wake Up",
-          // "Not Your Fault",
-          // "All I Need",
-          // "Knights of Shame"
+          "Megalithic Symphony",
+          "Some Sort of Creature",
+          "Soul Wars",
+          "Jumping on My Shoulders",
+          "Burn It Down",
+          "Guilty Filthy Soul",
+          "Kill Your Heroes",
+          "My Nightmare's Dream",
+          "Sail",
+          "Wake Up",
+          "Not Your Fault",
+          "All I Need",
+          "Knights of Shame"
         ],
         year    : 2011
       ).save(failOnError: true)
@@ -180,18 +181,18 @@ class BootStrap {
         artist  : "Rise Against",
         genre   : "Melodic Hardcore",
         tracks  : [
-          // "Architects",
-          // "Help is on the Way",
-          // "Make it Stop (September's Children)",
-          // "Disparity by Design",
-          // "Satellite",
-          // "Midnight Hands",
-          // "Survivor Guilt",
-          // "Broken Mirrors",
-          // "Wait for Me",
-          // "A Gentlemen's Coup",
-          // "This is Letting Go",
-          // "Endgame"
+          "Architects",
+          "Help is on the Way",
+          "Make it Stop (September's Children)",
+          "Disparity by Design",
+          "Satellite",
+          "Midnight Hands",
+          "Survivor Guilt",
+          "Broken Mirrors",
+          "Wait for Me",
+          "A Gentlemen's Coup",
+          "This is Letting Go",
+          "Endgame"
         ],
         year    : 2011
       ).save(failOnError: true)
@@ -201,18 +202,18 @@ class BootStrap {
         artist  : "Panic! At The Disco",
         genre   : "Synthpop",
         tracks  : [
-          // "This is Gospel",
-          // "Miss Jackson (feat. Lolo)",
-          // "Vegas Lights",
-          // "Girl that You Love",
-          // "Nicotine",
-          // "Girls/Girls/Boys",
-          // "Casual Affair",
-          // "Far too Young to Die",
-          // "Collar Full",
-          // "The End of All Things",
-          // "Can't Fight Against the Youth (Bonus Track)",
-          // "All the Boys (Bonus Track)"
+          "This is Gospel",
+          "Miss Jackson (feat. Lolo)",
+          "Vegas Lights",
+          "Girl that You Love",
+          "Nicotine",
+          "Girls/Girls/Boys",
+          "Casual Affair",
+          "Far too Young to Die",
+          "Collar Full",
+          "The End of All Things",
+          "Can't Fight Against the Youth (Bonus Track)",
+          "All the Boys (Bonus Track)"
         ],
         year    : 2013
       ).save(failOnError: true)
@@ -222,20 +223,20 @@ class BootStrap {
         artist  : "OneRepublic",
         genre   : "Progressive Rock",
         tracks  : [
-          // "Counting Stars",
-          // "If I Lose Myself",
-          // "Feel Again",
-          // "What You Wanted",
-          // "I Lived",
-          // "Light It Up",
-          // "Can't Stop",
-          // "Au Revoir",
-          // "Burning Bridges",
-          // "Something I Need",
-          // "Preacher",
-          // "Don't Look Down",
-          // "Somethings Gotta Give",
-          // "Life in Color"
+          "Counting Stars",
+          "If I Lose Myself",
+          "Feel Again",
+          "What You Wanted",
+          "I Lived",
+          "Light It Up",
+          "Can't Stop",
+          "Au Revoir",
+          "Burning Bridges",
+          "Something I Need",
+          "Preacher",
+          "Don't Look Down",
+          "Somethings Gotta Give",
+          "Life in Color"
         ],
         year    : 2013
       ).save(failOnError: true)
@@ -245,18 +246,18 @@ class BootStrap {
         artist  : "The Offspring",
         genre   : "Punk Rock",
         tracks  : [
-          // "Half-Truism",
-          // "Trust in You",
-          // "You're Gonna Go Far, Kid",
-          // "Hammerhead",
-          // "A Lot Like Me",
-          // "Takes Me Nowhere",
-          // "Kristy, Are You Doing Okay?",
-          // "Nothingtown",
-          // "Stuff is Messed Up",
-          // "Fix You",
-          // "Let's Hear it for Rock Bottom",
-          // "Rise and Fall"
+          "Half-Truism",
+          "Trust in You",
+          "You're Gonna Go Far, Kid",
+          "Hammerhead",
+          "A Lot Like Me",
+          "Takes Me Nowhere",
+          "Kristy, Are You Doing Okay?",
+          "Nothingtown",
+          "Stuff is Messed Up",
+          "Fix You",
+          "Let's Hear it for Rock Bottom",
+          "Rise and Fall"
         ],
         year    : 2008
       ).save(failOnError: true)

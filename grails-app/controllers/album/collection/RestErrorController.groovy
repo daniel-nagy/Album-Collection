@@ -1,20 +1,16 @@
 package album.collection
 
-/* create JSON objects */
+// create JSON objects
 import grails.converters.JSON
 
-/* enumeration of HTTP status codes */
+// enumeration of HTTP status codes
 import org.springframework.http.HttpStatus
 
-/**
- * Handles errors encountered while preforming CRUD operations.
- */
+/* handles errors encountered while preforming CRUD operations */
  
 class RestErrorController {
 
-  /**
-   * If LIST is invoked on an empty collection.
-   */
+  /* trying to LIST an empty collection */
   
   private void EmptyCollectionException() {
     
@@ -30,9 +26,9 @@ class RestErrorController {
   }
   
   /**
-   * If GET is invoked on an album that does not exist.
+   * Trying to retrieve an album that does not exist.
    *
-   * @param title  The title of the album attempting to be accessed.
+   * @param title   The title of the album.
    */
   
   private void AlbumDoesNotExistException(String title) {
@@ -49,9 +45,9 @@ class RestErrorController {
   }
 
   /**
-   * If POST is invoked on an album that already exists.
+   * Trying to create an album that already exists.
    *
-   * @param title  The title of the album attempting to be created.
+   * @param title  The title of the album.
    */
   
   private void UniqueAlbumException(String title) {
@@ -67,9 +63,7 @@ class RestErrorController {
     render error as JSON
   }
   
-  /**
-   * If POST is invoked on an album that does not have a title.
-   */
+  /* trying to create an album without a title */
 
   private void AbsentTitleException() {
     
@@ -85,9 +79,9 @@ class RestErrorController {
   }
   
   /**
-   * If POST or PUT fail to write to the database.
+   * If writing to the database fails.
    *
-   * @param title  The title of the album attempting to be saved.
+   * @param title  The title of the album.
    */
 
   private void AlbumWriteException(String title) {
@@ -103,9 +97,7 @@ class RestErrorController {
     render error as JSON
   }
   
-  /**
-   * If DELETE fails because the client is out of sync with the database.
-   */
+  /* if delete fails because the client is not in sync with the database state */
 
   private void DataIntegrityViolationException() {
     

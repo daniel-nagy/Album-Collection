@@ -1,29 +1,22 @@
 package album.collection
 
-/* create JSON objects */
+// create JSON objects
 import grails.converters.JSON
 
-/* enumeration of HTTP status codes */
+// enumeration of HTTP status codes
 import org.springframework.http.HttpStatus
 
-/* catch database exceptions */
+// catch hibernate exceptions
 import org.springframework.dao.DataIntegrityViolationException
 
-/**
- * Handles CRUD opperations invoked by REST calls from the client.
- * <p>
- * If you are referencing this file please realize this is a work
- * in progress and is not bulletproof and can be improved.
- */
+/* handles CRUD opperations invoked by REST calls from the client */
 
 class AlbumController {
   
-  /* creating an instance of the RestErrorController class */
+  // creating an instance of the RestErrorController class
   def exception = new RestErrorController()
   
-  /**
-   * Creates an album in a users collection.
-   */
+  /* creates an album in a users collection */
   
   def create() {
     
@@ -46,9 +39,7 @@ class AlbumController {
     }
   }
   
-  /**
-   * Lists all the albums in a users collection.
-   */
+  /* lists all the albums in a users collection */
   
   def list() {
     
@@ -61,9 +52,7 @@ class AlbumController {
     }
   }
   
-  /**
-   * Retrieves an album in a users collection.
-   */
+  /* retrieves an album in a users collection */
   
   def retrieve() {
     
@@ -78,9 +67,7 @@ class AlbumController {
     }
   }
 
-  /**
-   * Updates an album in a users collection.
-   */
+  /* updates an album in a users collection */
 
   def update() {
     

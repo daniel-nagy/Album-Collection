@@ -1,0 +1,52 @@
+<!-- view navigation -->
+<div class="page-nav songs-nav">
+  <a class="page-nav-items" href="#/albums">Albums</a>
+  <a class="page-nav-items" href="#/albums/artists">Artists</a>
+  <a class="page-nav-items active" href>Songs</a>
+  
+  <!-- view navigation dropdown -->
+  <span class="page-nav-items page-nav-dropdown" ng-controller="dropdownController">
+    <span class="dropdown" on-toggle="toggled(open)">
+      <a class="dropdown-toggle" href>
+        {{orderProp | capitalizeFilter}} <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li ng-repeat="option in options">
+          <a ng-click="order(option)" href>{{option}}</a>
+        </li>
+      </ul>
+    </span>
+  </span>
+</div>
+
+<!-- songs display -->
+<table class="table table-striped songs-view-table">
+  <tbody ng-repeat="album in collection | orderBy:orderProp">
+    <tr ng-repeat="track in album.tracks | filter:query">
+        
+      <td class="col-xs-8 col-sm-8 col-md-8">
+        
+        <!-- album art -->
+        <a class="thumbnail songs-view-album-art" href="#/albums/{{album.title}}">
+          <img ng-src="{{album.title | imageFilter}}">
+        </a>
+        
+        <!-- title and artist -->
+        <div class="songs-view-track-artist-container">
+          <p class="songs-view-track">{{track}}</p>
+          <a class="songs-view-artist" href>{{album.artist}}</a>
+        </div>
+        
+      </td>
+      
+      <td class="vert-align col-xs-4 col-sm-4 col-md-4">
+        
+        <!-- album and genre -->
+        <a class="songs-view-album" href="#/albums/{{album.title}}">{{album.title}}</a>
+        <div class="songs-view-genre">{{album.genre}}</div> 
+        
+      </td>
+      
+    </tr>
+  </tbody>
+</table>

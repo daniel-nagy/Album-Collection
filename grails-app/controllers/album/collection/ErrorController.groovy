@@ -1,20 +1,16 @@
 package album.collection
 
-/* create JSON objects */
+// create JSON objects
 import grails.converters.JSON
 
-/* enumeration of HTTP status codes */
+// enumeration of HTTP status codes
 import org.springframework.http.HttpStatus
 
-/**
- * Here is were we can handle generic error messages.
- */ 
+/* handles generic error messages */
 
 class ErrorController {
 
-  /**
-   * Generic 404 error. 
-   */
+  /* generic 404 error */
   
   def error404() {
     
@@ -29,9 +25,7 @@ class ErrorController {
     render error as JSON
   }
   
-  /**
-   * Generic 500 error. Your guess is as good as mine.
-   */
+  /* generic 500 error */
   
   def error500() {
     
@@ -45,4 +39,5 @@ class ErrorController {
     )
     render error as JSON
   }
+  
 }
