@@ -74,13 +74,47 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
       title  : album.title,
       artist : album.artist,
       genre  : album.genre,
-      tracks : album.tracks,
+      tracks : [],
       year   : album.year
     }
     
+    $scope.trackListing = {
+      tracks : [{track: ""}]
+    }
+    
+    for(i = 0; i < album.tracks.length; i++) {
+      $scope.trackListing.tracks[i] = {track: album.tracks[i]};
+    }
+    
+    $scope.removeTrack = function (index) {
+      
+      for(i = index; i < $scope.trackListing.tracks.length - 1; i++) {
+        $scope.trackListing.tracks[i] = $scope.trackListing.tracks[i + 1];
+      }
+      
+      $scope.trackListing.tracks.pop();
+    };
+    
+    $scope.addTrack = function (index) {
+      
+      for(i = $scope.trackListing.tracks.length; i > index + 1; i--) {
+        $scope.trackListing.tracks[i] = $scope.trackListing.tracks[i - 1];
+      }
+      
+      $scope.trackListing.tracks[index + 1] = {track: ""};
+    };
+    
     $scope.ok = function () {
       
-      var updateAlbum = albumResourceService.get({albumTitle: album.title}, function () {
+      var originalTitle = album.title;
+      
+      for(i = 0; i < $scope.trackListing.tracks.length; i++) {
+        if($scope.trackListing.tracks[i].track) {
+          $scope.albumCopy.tracks.push($scope.trackListing.tracks[i].track);
+        }
+      }
+      
+      var updateAlbum = albumResourceService.get({albumTitle: originalTitle}, function () {
         
         updateAlbum.title  = $scope.albumCopy.title;
         updateAlbum.artist = $scope.albumCopy.artist;
@@ -88,7 +122,7 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
         updateAlbum.tracks = $scope.albumCopy.tracks;
         updateAlbum.year   = $scope.albumCopy.year;
         
-        updateAlbum.$update({albumTitle: album.title});
+        updateAlbum.$update({albumTitle: originalTitle});
         
         console.log('Album updated');
       });
@@ -97,6 +131,7 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
     };
     
     $scope.cancel = function () {
+      
       $modalInstance.dismiss('cancel');
     };
   }
@@ -119,7 +154,6 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
       var modalInstance = $modal.open({
         templateUrl : 'modals/editAlbumModal.html',
         controller  : 'updateAlbumController',
-        size        : 'lg',
         resolve     : {
           album     : function () {
             return $scope.album;

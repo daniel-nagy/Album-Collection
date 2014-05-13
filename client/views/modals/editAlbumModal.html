@@ -4,25 +4,18 @@
   <!-- header -->
   <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()">&times;</button>
-    <h4 class="modal-title album-view-title">{{albumCopy.title ? albumCopy.title : 'Edit Album'}}</h4>
+    <h4 class="modal-title">{{albumCopy.title ? albumCopy.title : 'Edit Album'}}</h4>
   </div>
 
   <!-- body -->
   <div class="modal-body update-album">
-    <table class="table album-view-table">
+    <table class="table update-table">
       <tbody>
         <tr>
-          <td>
-            
-            <!-- album art -->
-            <img class="thumbnail album-view-album-art" ng-src="{{albumCopy.title | imageFilter}}">
-            
-          </td>
-          
           <td class="col-xs-12 col-sm-12 col-md-12" ng-controller="inputValidationController">
             
-            <!-- mobile album art -->
-            <img class="thumbnail album-view-mobile-art" ng-src="{{albumCopy.title | imageFilter}}">
+            <!-- album art -->
+            <img class="thumbnail update-album-art" ng-src="{{albumCopy.title | imageFilter}}">
             
             <!-- album information -->
             <input class="album-view-title" type="text" placeholder="Title" ng-model="albumCopy.title">
@@ -32,11 +25,13 @@
             
             <!-- track listing -->
             <ol class="update-album-tracks col-xs-12 col-sm-12 col-md-12">
-              <span class="col-xs-12 col-sm-12 col-md-12">
-                <li ng-repeat="track in albumCopy.tracks">
-                  <input type="text" ng-model="track">
-                </li>
-              </span>
+              <li ng-repeat="tracks in trackListing.tracks">
+                <input type="text" placeholder="Track {{$index + 1}}" ng-model="tracks.track">
+                <span class="update-album-add-remove-track">
+                  <a class="glyphicon glyphicon-minus" ng-click="removeTrack($index)" href></a>
+                  <a class="glyphicon glyphicon-plus" ng-click="addTrack($index)" href></a>
+                </span>
+              </li>
             </ol>
             
           </td>
