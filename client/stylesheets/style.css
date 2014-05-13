@@ -113,6 +113,9 @@ a:active {
 .modal-title {
   font-size: 24px;
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .modal-body {
@@ -125,12 +128,6 @@ a:active {
   border-radius: 0 0 6px 6px;
   background-color: #f9f8f4;
   border-top: 1px #cdcdcd solid;
-}
-
-@media (min-width: 768px) and (max-width: 992px) {
-  .modal-lg {
-    width: 90%;
-  }
 }
 
 /*---------------------------------------------------------*/
@@ -333,7 +330,7 @@ a:active {
 }
 
 .album-view-table > tbody > tr > td {
-  border-bottom: none;
+  border-bottom: 0;
 }
 
 .album-view-title,
@@ -341,9 +338,6 @@ a:active {
 .album-view-year,
 .album-view-genre {
   display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .album-view-title {
@@ -367,30 +361,15 @@ a:active {
   width: 300px;
 }
 
-.album-view-tracks,
-.album-view-mobile-tracks {
-  font-size: 16px;
-}
-
-.album-view-tracks li,
-.album-view-mobile-tracks li {
+.album-view-tracks li {
   list-style-position: inside;
 }
 
-.album-view-tracks p,
-.album-view-mobile-tracks p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .album-view-tracks {
-  padding: 12px 0 0;
   border-top: 1px #e5e5e5 solid;
-}
-
-.album-view-mobile-tracks {
-  display: none;
+  font-size: 16px;
+  padding: 12px 12px 0;
+  -webkit-column-count: 2;
 }
 
 .album-view-edit {
@@ -414,20 +393,19 @@ a:active {
   .album-view-artist,
   .album-view-genre,
   .album-view-year {
-    padding: 0 0 0px 12px;
+    padding: 0 0 0 12px;
   }
 
-
-  .album-view-table td:nth-child(1),
-  .album-view-tracks {
+  .album-view-table td:nth-child(1) {
     display: none;
   }
   
-  .album-view-mobile-tracks {
-    display: block;
+  .album-view-tracks {
+    -webkit-column-count: 1;
+    border-top: 0;
   }
   
-  .album-view-mobile-tracks p {
+  .album-view-tracks p {
     border-top: 1px #cdcdcd solid;
     margin: 0;
     padding: 8px;
@@ -457,6 +435,24 @@ a:active {
 /*---------------------------------------------------------*/
 /* update album view */
 
+.update-table {
+  position: relative;
+  table-layout: fixed;
+}
+
+.update-table > tbody > tr > td {
+  border-bottom: 0;
+}
+
+.update-album-art {
+  display: block;
+  width: 300px;
+  margin-top: 0;
+  margin-right: auto;
+  margin-bottom: 12px;
+  margin-left: auto;
+}
+
 .update-album .album-view-artist,
 .update-album .album-view-year,
 .update-album .album-view-genre {
@@ -465,7 +461,7 @@ a:active {
 
 .update-album input,
 .update-album input:focus {
-  width: 100%;
+  width: 88%;
   border: 0;
   outline: 0;
   background-color: transparent;
@@ -473,7 +469,7 @@ a:active {
 }
 
 .update-album-tracks {
-  margin: 12px 0 0;
+  margin: 12px 0 0 12px;
   font-size: 16px;
 }
 
@@ -481,4 +477,14 @@ a:active {
 .update-album-tracks input:focus {
   padding: 8px 0;
   border-top: 1px #cdcdcd solid;
+}
+
+.update-album-add-remove-track {
+  font-size: 12px;
+  width: 12%;
+  text-align: center;
+}
+
+.update-album-add-remove-track a {
+  width: 7%;
 }

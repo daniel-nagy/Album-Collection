@@ -9,7 +9,6 @@
 <table class="table album-view-table">
   <tbody>
     <tr>
-      
       <td>
         
         <!-- album art -->
@@ -28,23 +27,12 @@
         
         <!-- track-listing -->
         <ol class="album-view-tracks col-xs-12 col-sm-12 col-md-12">
-          <li class="col-xs-6 col-sm-6 col-md-6" ng-repeat="track in album.tracks | firstHalfFilter | filter:query">
-            <p>{{'\u00A0'}} {{track}}</p>
-          </li>
-          <li class="col-xs-6 col-sm-6 col-md-6" ng-repeat="track in album.tracks | secondHalfFilter | filter:query">
-            <p>{{'\u00A0'}} {{track}}</p>
-          </li>
-        </ol>
-        
-        <!-- mobile track-listing -->
-        <ol class="album-view-mobile-tracks col-xs-12 col-sm-12 col-md-12">
-          <li ng-repeat="track in album.tracks">
+          <li ng-repeat="track in album.tracks | filter:query">
             <p>{{'\u00A0'}} {{track}}</p>
           </li>
         </ol>
         
       </td>
-      
     </tr>
   </tbody>
 </table>
