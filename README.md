@@ -16,4 +16,4 @@ Mobile:
 
 **Credits**
 
-	* [Building a FileReader Service For AngularJS](http://odetocode.com/blogs/scott/archive/2013/07/03/building-a-filereader-service-for-angularjs-the-service.aspx) by K. Scott Allen.
+* [Building a FileReader Service For AngularJS](http://odetocode.com/blogs/scott/archive/2013/07/03/building-a-filereader-service-for-angularjs-the-service.aspx) by K. Scott Allen.
