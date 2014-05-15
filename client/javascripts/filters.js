@@ -3,20 +3,8 @@
 var albumFilters = angular.module('albumFilters', []);
 
 /*
- * Provides a place holder for albums without
- * artwork.
- */
-
-albumFilters.filter('imageFilter', function () {
-  
-  return function (input) {
-    return input ? '/images/artwork/' + input + '.jpg' : '/images/artwork/place-holder.png';
-  };
-});
-
-/*
- * Wraps parentheses around the year for better
- * visualization.
+ * wraps parentheses around the year for better
+ * visualization
  */
 
 albumFilters.filter('yearFilter', function () {
@@ -26,7 +14,7 @@ albumFilters.filter('yearFilter', function () {
   };
 });
 
-/* Returns a correctly capitalized proper noun. */
+/* returns a correctly capitalized proper noun */
 
 albumFilters.filter('capitalizeFilter', function () {
   

@@ -6,10 +6,14 @@ The server is written in Groovy using the Grails Framework and the client is wri
 
 **Previews**
 
-Desktop:
+Desktop: preview of the update modal
 
-![Alt text](./client/images/screen-captures/albumThumbnailsView.tiff?raw=true)
+![alt text](./client/images/screen-captures/updateAlbumModal.png?raw=true)
 
 Mobile:
 
-![Alt text](./client/images/screen-captures/albumMobileViews.png?raw=true)
+![alt text](./client/images/screen-captures/albumMobileViews.png?raw=true)
+
+**Credits**
+
+	* [Building a FileReader Service For AngularJS](http://odetocode.com/blogs/scott/archive/2013/07/03/building-a-filereader-service-for-angularjs-the-service.aspx) by K. Scott Allen.

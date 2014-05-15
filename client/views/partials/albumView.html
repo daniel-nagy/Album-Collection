@@ -12,14 +12,14 @@
       <td>
         
         <!-- album art -->
-        <img class="thumbnail album-view-album-art" ng-src="{{album.title | imageFilter}}">
+        <img class="thumbnail album-view-album-art" ng-src="/images/artwork/{{album.title}}.jpg" place-holder="/images/artwork/place-holder.png">
         
       </td>
       
       <td class="col-xs-12 col-sm-12 col-md-12">
         
         <!-- mobile album art -->
-        <img class="thumbnail album-view-mobile-art" ng-src="{{album.title | imageFilter}}">
+        <img class="thumbnail album-view-mobile-art" ng-src="/images/artwork/{{album.title}}.jpg" place-holder="/images/artwork/place-holder.png">
         
         <!-- album and artist -->
         <p class="album-view-title">{{album.title}}</p>

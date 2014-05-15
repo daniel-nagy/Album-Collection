@@ -14,14 +14,36 @@
         <tr>
           <td class="col-xs-12 col-sm-12 col-md-12" ng-controller="inputValidationController">
             
-            <!-- album art -->
-            <img class="thumbnail update-album-art" ng-src="{{albumCopy.title | imageFilter}}">
+            <div class="overlay" ng-controller="fileUploadController">
+              
+              <!-- image upload -->
+              <div class="overlay-button-container">
+                
+                <div class="button-cell">
+                  
+                  <p>Drag and drop or</p>
+                  
+                  <!-- upload button -->
+                  <div class="btn btn-success upload-btn">
+                    Uplaod File <input type="file" file-upload="onFileSelect($files)">
+                  </div>
+                  
+                  <!-- upload progress -->
+                  <progressbar class="progress-striped active" max="1" value="progress"></progressbar>
+                  
+                </div>
+              </div>
+              
+              <!-- album art -->
+              <img class="thumbnail update-album-art" ng-src="{{artwork}}" place-holder="/images/artwork/place-holder.png">
+              
+            </div>
             
             <!-- album information -->
             <input class="album-view-title" type="text" placeholder="Title" ng-model="albumCopy.title">
             <input class="album-view-artist" type="text" placeholder="Artist" ng-model="albumCopy.artist">
             <input class="album-view-genre" type="text" placeholder="Genre" ng-model="albumCopy.genre">
-            <input class="album-view-year" type="text" ng-keypress="keyValidate(event)" maxlength="4" placeholder="Year" ng-model="albumCopy.year">
+            <input class="album-view-year" type="text" ng-keypress="keyValidate($event)" maxlength="4" placeholder="Year" ng-model="albumCopy.year">
             
             <!-- track listing -->
             <ol class="update-album-tracks col-xs-12 col-sm-12 col-md-12">
