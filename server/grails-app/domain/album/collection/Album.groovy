@@ -7,15 +7,19 @@ class Album {
   String    title
   String    artist
   String    genre
-  String[]  tracks 
-  int       year
+  String[]  tracks
+  String    artwork
+  Integer   year
   
   static constraints = {
     
-    // force the user to provide a unique title
-    title(blank: false, unique: true)
-    
-    year(max: 2014)
+    // only require the user to enter a unique title
+    title blank: false, unique: true
+    artist nullable: true
+    genre nullable: true
+    artwork nullable: true
+    tracks nullable: true
+    year nullable: true, min: 1889, max: 2014
   }
   
   // so hibernate doesn't complain about tracks column size
