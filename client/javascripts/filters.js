@@ -8,7 +8,6 @@ var albumFilters = angular.module('albumFilters', []);
  */
 
 albumFilters.filter('yearFilter', function () {
-
   return function (input) {
     return input ? '(' + input + ')' : input;
   };
@@ -17,7 +16,6 @@ albumFilters.filter('yearFilter', function () {
 /* returns a correctly capitalized proper noun */
 
 albumFilters.filter('capitalizeFilter', function () {
-  
   return function (input) {
     return input ? input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase() : input;
   };

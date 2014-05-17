@@ -215,6 +215,12 @@ a:active {
   margin: 8px 0 2px;
 }
 
+.create-album {
+  font-size: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
 .thumbnail-view-title,
 .thumbnail-view-artist {
   display: block;
@@ -444,7 +450,7 @@ a:active {
   border-bottom: 0;
 }
 
-.overlay {
+.update-album-art-container {
   position: relative;
   display: table;
   margin-top: 0;
@@ -453,28 +459,52 @@ a:active {
   margin-left: auto;
 }
 
-.overlay-button-container {
+.update-album-art {
   position: absolute;
-  top: 0; left: 0;
-  bottom: 0; right: 0;
+  top: 0; right: 0;
+  width: 300px;
+}
+
+.upload-cell,
+.upload-cell span {
+  position: relative;
+  display: table-cell;
+  height: 300px;
+  width: 300px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.upload-album-art:hover {
+  opacity: 1;
+}
+
+.upload-album-art:hover .upload-btn {
+  opacity: 1;
+}
+
+.upload-album-art:hover .progress-striped {
+  opacity: 1;
+}
+
+.drop-zone,
+.upload-album-art {
+  position: relative;
+  height: 300px;
+  width: 300px;
+  background-color: #f9f8f4;
   border: 2px #cdcdcd dashed;
   border-radius: 4px;
-  background-color: #f9f8f4;
+  font-size: 22px;
+  color: #b3b3b3;
   transition: all 0.5s;
+}
+
+.upload-album-art {
   opacity: 0;
 }
 
-.button-cell {
-  display: table-cell;
-  width: 300px;
-  height: 300px;
-  text-align: center;
-  vertical-align: middle;
-  color: #b3b3b3;
-  font-size: 22px;
-}
-
-.overlay-button-container:hover {
+.drop-zone {
   opacity: 1;
 }
 
@@ -483,6 +513,8 @@ a:active {
   overflow: hidden;
   margin: 0 0 16px;
   border: 0;
+  transition: all 0.5s;
+  opacity: 0;
 }
 
 .upload-btn input[type=file] {
@@ -495,10 +527,12 @@ a:active {
 
 .progress-striped {
   margin: 0 16px;
-}
-
-.update-album-art {
-  width: 300px;
+  background-color: #cdcdcd;
+  border: 1px #B2B2B2 solid;
+  border-radius: 10px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s;
+  opacity: 0;
 }
 
 .update-album .album-view-artist,

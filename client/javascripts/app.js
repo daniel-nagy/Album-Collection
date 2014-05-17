@@ -43,7 +43,6 @@ var albumCollection = angular.module('albumCollection', [
  
 albumCollection.config(['$routeProvider',
   function ($routeProvider) {
-    
     $routeProvider.
       when('/albums', {
         templateUrl : 'partials/albumThumbnailsView.html',

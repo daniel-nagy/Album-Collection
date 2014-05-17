@@ -12,14 +12,14 @@
       <td>
         
         <!-- album art -->
-        <img class="thumbnail album-view-album-art" ng-src="/images/artwork/{{album.title}}.jpg" place-holder="/images/artwork/place-holder.png">
+        <img class="thumbnail album-view-album-art" ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
         
       </td>
       
       <td class="col-xs-12 col-sm-12 col-md-12">
         
         <!-- mobile album art -->
-        <img class="thumbnail album-view-mobile-art" ng-src="/images/artwork/{{album.title}}.jpg" place-holder="/images/artwork/place-holder.png">
+        <img class="thumbnail album-view-mobile-art" ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
         
         <!-- album and artist -->
         <p class="album-view-title">{{album.title}}</p>
@@ -37,7 +37,7 @@
   </tbody>
 </table>
 
-<div class="album-view-edit col-xs-12 col-sm-12 col-md-12">
+<div class="album-view-edit col-xs-12 col-sm-12 col-md-12" ng-init="isNewAlbum = false;">
   
   <!-- delete -->
   <a class="glyphicon glyphicon-trash" ng-controller="removeAlbumModalController" ng-click="removeAlbum()" href></a>

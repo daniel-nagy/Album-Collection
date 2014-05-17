@@ -23,7 +23,6 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
     console.log('Albums retrieved');
     
     $scope.order = function (input) {
-      
       switch(input) {
         case 'Title':
           $scope.orderProp = 'title';
@@ -38,6 +37,7 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
           $scope.orderProp = 'artist';
       }
     };
+    
   }
 ]);
 
@@ -50,38 +50,108 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
 
 albumControllers.controller('retrieveAlbumController', ['$scope', '$routeParams', 'albumResourceService',
   function ($scope, $routeParams, albumResourceService) {
-    
     $scope.album = albumResourceService.get({albumTitle: $routeParams.albumTitle});
-    
     console.log('Album retrieved');
   }
 ]);
 
 /**
- * Updates an album in a collection.
- *
- * @param $modalInstance   Contains information
- *                         about $modal service.
- * 
- * @param album            Album in the current
- *                         scope.
- */
+* Opens a modal for creating or updating an album.
+*
+* @param $modal    Service for creating AngularJS
+*                  modal windows.
+*
+* @see             ui.bootstrap.modal
+*/
 
-albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance', 'album', 'albumResourceService',
-  function ($scope, $modalInstance, album, albumResourceService) {
+albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
+  function ($scope, $modal) {
     
-    $scope.albumCopy = {
-      title  : album.title,
-      artist : album.artist,
-      genre  : album.genre,
-      tracks : [],
-      year   : album.year
+    $scope.updateAlbum = function () {
+      
+      /* 
+       * if the user is adding a new album 
+       * create an empty album object
+       */
+      
+      if($scope.isNewAlbum) {
+        $scope.album = {
+          title   : '',
+          artist  : '',
+          genre   : '',
+          tracks  : [],
+          artwork : $scope.placeHolder,
+          year    : ''
+        }
+      }
+      
+      /* creating a modal instance */
+      
+      var modalInstance = $modal.open({
+        templateUrl  : 'modals/editAlbumModal.html',
+        controller   : 'updateAlbumController',
+        resolve      : {
+          album      : function () {
+            return $scope.album;
+          },
+          isNewAlbum : function () {
+            return $scope.isNewAlbum;
+          }
+        }
+      });
+      
+      /* 
+       * after the user has saved their album 
+       * update the current scope
+       */
+      
+      modalInstance.result.then(function (album) {
+        
+        if($scope.isNewAlbum) {
+          $scope.collection.push(album);
+        }
+        
+        else {
+          $scope.album.title    = album.title;
+          $scope.album.artist   = album.artist;
+          $scope.album.genre    = album.genre;
+          $scope.album.tracks   = album.tracks;
+          $scope.album.artwork  = album.artwork;
+          $scope.album.year     = album.year;
+        }
+      });
+      
+    };
+    
+  }
+]);
+
+/* Updates an album in a collection */
+
+albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance', 'album', 'isNewAlbum', 'albumResourceService',
+  function ($scope, $modalInstance, album, isNewAlbum, albumResourceService) {
+    
+    /* creating a modal title for the user */
+    
+    $scope.modalTitle = isNewAlbum ? 'Add Album' : 'Edit Album';
+    
+    $scope.artwork = album.artwork;
+    
+    /* creating a copy of the album for editing */
+    
+    $scope.album = {
+      title   : album.title,
+      artist  : album.artist,
+      genre   : album.genre,
+      tracks  : [],
+      artwork : album.artwork,
+      year    : album.year
     }
     
     /*
-    * converting an array of strings to an object
-    * of key value pairs so I can use ng-model to
-    * update their value
+    * converting the track-listing from an array
+    * of strings to an object of key value pairs
+    * so I can use ng-model to update their values
     */
     
     $scope.trackListing = {
@@ -89,10 +159,8 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
     }
     
     for(i = 0; i < album.tracks.length; i++) {
-      $scope.trackListing.tracks[i] = {track: album.tracks[i]};
+       $scope.trackListing.tracks[i] = {track: album.tracks[i]};
     }
-    
-    $scope.artwork = '/images/artwork/' + album.title + '.jpg';
     
     $scope.removeTrack = function (index) {
       
@@ -108,8 +176,8 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
       
       /*
        * when a user removes a track reorder the
-       * proceeding tracks one index and pop the
-       * duplicate track from the end
+       * proceeding tracks and pop the duplicate
+       * track from the end
        */
       
       else {
@@ -124,9 +192,9 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
     $scope.addTrack = function (index) {
       
       /*
-       * when a user adds a track move the
-       * proceeding tracks one index and overwrite
-       * the duplicate track
+       * when a user adds a track reorder the
+       * proceeding tracks and overwrite the
+       * duplicate track
        */
       
       for(i = $scope.trackListing.tracks.length; i > index + 1; i--) {
@@ -138,78 +206,68 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
     
     $scope.ok = function () {
       
-      /*
-       * preserving the original title becuase the
-       * database query is asynchronous and the
-       * scope will be updated before the callback
+      /* 
+       * converting the track-listing back to an
+       * array of strings
        */
-      
-      var originalTitle = album.title;
-      
-      /* converting back to an array of strings */
       
       for(i = 0; i < $scope.trackListing.tracks.length; i++) {
         if($scope.trackListing.tracks[i].track) {
-          $scope.albumCopy.tracks.push($scope.trackListing.tracks[i].track);
+          $scope.album.tracks.push($scope.trackListing.tracks[i].track);
         }
       }
       
-      var updateAlbum = albumResourceService.get({albumTitle: originalTitle}, function () {
-        
-        updateAlbum.title  = $scope.albumCopy.title;
-        updateAlbum.artist = $scope.albumCopy.artist;
-        updateAlbum.genre  = $scope.albumCopy.genre;
-        updateAlbum.tracks = $scope.albumCopy.tracks;
-        updateAlbum.year   = $scope.albumCopy.year;
-        
-        updateAlbum.$update({albumTitle: originalTitle});
-        
-        console.log('Album updated');
-      });
+      if(isNewAlbum) {
+        albumResourceService.save($scope.album);
+      }
       
-      $modalInstance.close($scope.albumCopy);
+      else {
+        
+        /*
+         * preserving the original title becuase the
+         * database query is asynchronous and the
+         * scope will be updated before the callback
+         */
+        
+        var originalTitle = album.title;
+        
+        var updateAlbum = albumResourceService.get({albumTitle: originalTitle}, function () {
+          
+          albumResourceService.update({albumTitle: originalTitle}, $scope.album);
+          
+          console.log('Album updated');
+        });
+        
+      }
+      
+      $modalInstance.close($scope.album);
     };
     
     $scope.cancel = function () {
-      
       $modalInstance.dismiss('cancel');
     };
+    
   }
 ]);
 
-/**
- * Creates a modal for updating an album.
- *
- * @param $modal    Service for creating AngularJS
- *                  modal windows.
- *
- * @see             ui.bootstrap.modal
- */
+/* opens a modal for confirming album removal */
 
-albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
+albumControllers.controller('removeAlbumModalController',  ['$scope', '$modal',
   function ($scope, $modal) {
     
-    $scope.updateAlbum = function () {
+    $scope.removeAlbum = function () {
       
       var modalInstance = $modal.open({
-        templateUrl : 'modals/editAlbumModal.html',
-        controller  : 'updateAlbumController',
+        templateUrl : 'modals/removeAlbumModal.html',
+        controller  : 'removeAlbumController',
         resolve     : {
           album     : function () {
             return $scope.album;
           }
         }
       });
-      
-      modalInstance.result.then(function (updateAlbum) {
-        $scope.album.title = updateAlbum.title;
-        $scope.album.artist = updateAlbum.artist;
-        $scope.album.genre = updateAlbum.genre;
-        $scope.album.tracks = updateAlbum.tracks;
-        $scope.album.year = updateAlbum.year;
-      });
-      
     };
+    
   }
 ]);
 
@@ -238,29 +296,9 @@ albumControllers.controller('removeAlbumController', ['$scope', '$location', '$m
     };
     
     $scope.cancel = function () {
-      
       $modalInstance.dismiss('cancel');
     };
-  }
-]);
-
-/* creates a modal for confirming album removal */
-
-albumControllers.controller('removeAlbumModalController',  ['$scope', '$modal',
-  function ($scope, $modal) {
     
-    $scope.removeAlbum = function () {
-      
-      var modalInstance = $modal.open({
-        templateUrl : 'modals/removeAlbumModal.html',
-        controller  : 'removeAlbumController',
-        resolve     : {
-          album     : function () {
-            return $scope.album;
-          }
-        }
-      });
-    };
   }
 ]);
 
@@ -268,7 +306,6 @@ albumControllers.controller('removeAlbumModalController',  ['$scope', '$modal',
 
 albumControllers.controller('dropdownController', ['$scope',
   function ($scope) {
-    
     $scope.options = ['Title', 'Artist', 'Year'];
   }
 ]);
@@ -298,6 +335,7 @@ albumControllers.controller('inputValidationController', ['$scope',
       
       return true;
     };
+    
   }
 ]);
 
@@ -315,6 +353,7 @@ albumControllers.controller('fileUploadController', ['$scope', 'fileUploadServic
     $scope.uploadFile = function () {
       
       fileUploadService.readAsDataURL($scope.file, $scope).then(function (result) {
+        $scope.album.artwork = '/images/artwork/' + $scope.file.name;
         $scope.artwork = result;
       });
     };
@@ -326,5 +365,6 @@ albumControllers.controller('fileUploadController', ['$scope', 'fileUploadServic
     $scope.$on('fileLoadProcessComplete', function () {
       $scope.progress = 0;
     });
+    
   }
 ]);

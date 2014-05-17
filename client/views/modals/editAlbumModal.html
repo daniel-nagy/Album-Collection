@@ -4,7 +4,7 @@
   <!-- header -->
   <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()">&times;</button>
-    <h4 class="modal-title">{{albumCopy.title ? albumCopy.title : 'Edit Album'}}</h4>
+    <h4 class="modal-title">{{album.title ? album.title : modalTitle}}</h4>
   </div>
 
   <!-- body -->
@@ -14,36 +14,41 @@
         <tr>
           <td class="col-xs-12 col-sm-12 col-md-12" ng-controller="inputValidationController">
             
-            <div class="overlay" ng-controller="fileUploadController">
+            <!-- update album art -->
+            <div class="update-album-art-container" ng-controller="fileUploadController">
               
-              <!-- image upload -->
-              <div class="overlay-button-container">
+              <!-- album art -->
+              <img class="thumbnail update-album-art" ng-src="{{artwork}}" place-holder="{{placeHolder}}">
+              
+              <!-- upload -->
+              <div class="upload-cell">
                 
-                <div class="button-cell">
+                <!-- drop-zone -->
+                <div class="upload-album-art" ng-init="file.name = 'Drop Artwork';" droppable>
                   
-                  <p>Drag and drop or</p>
-                  
-                  <!-- upload button -->
-                  <div class="btn btn-success upload-btn">
-                    Uplaod File <input type="file" file-upload="onFileSelect($files)">
-                  </div>
-                  
-                  <!-- upload progress -->
-                  <progressbar class="progress-striped active" max="1" value="progress"></progressbar>
+                  <span>
+                    
+                    <p>{{file.name}}</p>
+                    
+                    <!-- upload button -->
+                    <div class="btn btn-success upload-btn">
+                      Uplaod File <input type="file" file-upload="onFileSelect($files)">
+                    </div>
+                    
+                    <!-- upload progress -->
+                    <progressbar class="progress-striped active" max="1" value="progress" type="success"></progressbar>
+                    
+                  </span>
                   
                 </div>
               </div>
-              
-              <!-- album art -->
-              <img class="thumbnail update-album-art" ng-src="{{artwork}}" place-holder="/images/artwork/place-holder.png">
-              
             </div>
             
             <!-- album information -->
-            <input class="album-view-title" type="text" placeholder="Title" ng-model="albumCopy.title">
-            <input class="album-view-artist" type="text" placeholder="Artist" ng-model="albumCopy.artist">
-            <input class="album-view-genre" type="text" placeholder="Genre" ng-model="albumCopy.genre">
-            <input class="album-view-year" type="text" ng-keypress="keyValidate($event)" maxlength="4" placeholder="Year" ng-model="albumCopy.year">
+            <input class="album-view-title" type="text" placeholder="Title" ng-model="album.title">
+            <input class="album-view-artist" type="text" placeholder="Artist" ng-model="album.artist">
+            <input class="album-view-genre" type="text" placeholder="Genre" ng-model="album.genre">
+            <input class="album-view-year" type="text" ng-keypress="keyValidate($event)" maxlength="4" placeholder="Year" ng-model="album.year">
             
             <!-- track listing -->
             <ol class="update-album-tracks col-xs-12 col-sm-12 col-md-12">

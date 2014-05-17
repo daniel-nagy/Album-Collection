@@ -29,7 +29,7 @@
           
           <!-- mobile album art -->
           <a class="thumbnail artist-view-mobile-art" href="#/albums/{{album.title}}">
-            <img ng-src="/images/artwork/{{album.title}}.jpg" place-holder="/images/artwork/place-holder.png">
+            <img ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
           </a>
           
           <!-- album and artist -->
@@ -53,7 +53,7 @@
         
         <!-- album art -->
         <a class="thumbnail artist-view-album-art" href="#/albums/{{album.title}}">
-          <img ng-src="/images/artwork/{{album.title}}.jpg" place-holder="/images/artwork/place-holder.png">
+          <img ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
         </a>
         
       </td>

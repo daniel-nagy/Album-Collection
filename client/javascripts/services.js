@@ -11,10 +11,10 @@ var albumServices = angular.module('albumServices', ['ngResource']);
 
 albumServices.factory('albumResourceService', ['$resource',
   function ($resource) {
-    
     return $resource('http://localhost:8080/Album-Collection/album/:albumTitle', {}, {
       query  : {method:'GET', params:{albumTitle:''}, isArray:true},
-      update : {method:'PUT'}
+      update : {method:'PUT'},
+      create : {method:'POST'}
     });
   }
 ]);

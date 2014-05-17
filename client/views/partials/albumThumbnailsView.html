@@ -21,11 +21,22 @@
 
 <!-- album display -->
 <div class="thumbnail-view-container col-xs-12 col-sm-12 col-md-12">
+  
+  <!-- dummy album -->
+  <span class="col-xs-4 col-sm-3 col-md-2" ng-init="isNewAlbum = true;">
+    
+    <!--create album -->
+    <a class="thumbnail thumbnail-view-album-art" ng-controller="updateAlbumModalController" ng-click="updateAlbum()" href>
+      <img ng-src="/images/artwork/add-album.png">
+    </a>
+    
+  </span>
+  
   <span class="col-xs-4 col-sm-3 col-md-2" ng-repeat="album in collection | filter:query | orderBy:orderProp">
     
     <!-- album thumbnails -->
     <a class="thumbnail thumbnail-view-album-art" href="#/albums/{{album.title}}">
-      <img ng-src="/images/artwork/{{album.title}}.jpg" place-holder="/images/artwork/place-holder.png">
+      <img ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
     </a>
     
     <!-- album and artist -->
