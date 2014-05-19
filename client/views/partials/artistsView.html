@@ -5,7 +5,7 @@
   <a class="page-nav-items" href="#/albums/songs">Songs</a>
   
   <!-- view navigation dropdown -->
-  <span class="page-nav-items page-nav-dropdown" ng-controller="dropdownController">
+  <span class="page-nav-items page-nav-dropdown">
     <span class="dropdown" on-toggle="toggled(open)">
       <a class="dropdown-toggle" href>
         {{orderProp | capitalizeFilter}} <span class="caret"></span>
@@ -19,44 +19,64 @@
   </span>
 </div>
 
-<!-- artist display -->
-<table class="table table-striped artist-view-table">
-  <tbody>
-    <tr ng-repeat="album in collection | filter:query | orderBy:orderProp">
-      <td class="col-xs-12 col-sm-12 col-md-12">
-        
-        <div class="col-xs-12 col-sm-12 col-md-12">
-          
-          <!-- mobile album art -->
-          <a class="thumbnail artist-view-mobile-art" href="#/albums/{{album.title}}">
-            <img ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
-          </a>
-          
-          <!-- album and artist -->
-          <div class="artist-view-title-artist-container">
-            <a class="album-view-title" href="#/albums/{{album.title}}">{{album.title}}</a>
-            <a class="album-view-artist" href>{{album.artist}} {{album.year | yearFilter}}</a>
-          </div>
-          
-        </div>
-        
-        <!-- track-listing -->
-        <ol class="album-view-tracks col-xs-12 col-sm-12 col-md-12">
-          <li ng-repeat="track in album.tracks | filter:query">
-            <p>{{'\u00A0'}} {{track}}</p>
-          </li>
-        </ol>
-        
-      </td>
+<div ng-controller="artistViewController">
+  
+  <div class="artist-list-table-container">
+    
+    <!-- artists lists -->
+    <table class="table artist-list-table table-hover col-xs-12 col-sm-12 col-md-12">
+      <tbody>
+        <tr ng-repeat="artist in artists | filter:query | orderBy:'toString()'">
+          <td class="vert-align" ng-click="viewAlbumsBy(artist)">
+            <a>{{artist}}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+  
+  <div class="albums-by-artist-table-container">
+    
+    <!-- albums by artist -->
+    <table class="table table-striped albums-by-artist-table col-xs-12 col-sm-12 col-md-12">
       
-      <td>
+      <!-- {{albumsByArtist ? albumsByArtist[0].artist : 'All Albums'}} -->
+      
+      <tbody>
         
-        <!-- album art -->
-        <a class="thumbnail artist-view-album-art" href="#/albums/{{album.title}}">
-          <img ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
-        </a>
-        
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <tr ng-repeat="album in getAlbums() | filter:query | orderBy:orderProp:reverse">
+          <td>
+            
+            <!-- mobile album art -->
+            <a class="thumbnail artist-view-artwork" href="#/albums/{{album.title}}">
+              <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
+            </a>
+            
+          </td>
+          
+          <td class="col-xs-12 col-sm-12 col-md-12">
+            
+            <div class="artist-view-title-year-container col-xs-12 col-sm-12 col-md-12">
+              
+              <!-- album and artist -->
+              <a class="artist-view-title" href="#/albums/{{album.title}}">{{album.title}}</a>
+              <p class="artist-view-year" href>{{album.year}}</p>
+              
+            </div>
+            
+            <!-- track-listing -->
+            <ol class="album-view-tracks">
+              <li ng-repeat="track in album.tracks | filter:query">
+                <p>{{'\u00A0'}} {{track}}</p>
+              </li>
+            </ol>
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+  
+</div>

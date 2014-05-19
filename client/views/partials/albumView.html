@@ -12,18 +12,18 @@
       <td>
         
         <!-- album art -->
-        <img class="thumbnail album-view-album-art" ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
+        <img class="thumbnail album-view-album-art" ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
         
       </td>
       
       <td class="col-xs-12 col-sm-12 col-md-12">
         
         <!-- mobile album art -->
-        <img class="thumbnail album-view-mobile-art" ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
+        <img class="thumbnail album-view-mobile-art" ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
         
         <!-- album and artist -->
         <p class="album-view-title">{{album.title}}</p>
-        <a class="album-view-artist" href>{{album.artist}} {{album.year | yearFilter}}</a>
+        <a class="album-view-artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}} {{album.year | yearFilter}}</a>
         
         <!-- track-listing -->
         <ol class="album-view-tracks col-xs-12 col-sm-12 col-md-12">

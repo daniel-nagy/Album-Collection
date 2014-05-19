@@ -43,14 +43,14 @@
     </nav>
     
     <!-- page content -->
-    <div class="container-fluid">
+    <div class="container-fluid" ng-controller="retrieveCollectionController">
       <div class="row">
         
         <!-- page header -->
         <h1 class="page-header">My Album Collection</h1>
         
         <!-- view template -->
-        <div ng-view ng-init="placeHolder='/images/artwork/place holder.png';"></div>
+        <div ng-view></div>
         
       </div>
     </div>

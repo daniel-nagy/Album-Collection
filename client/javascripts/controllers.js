@@ -17,27 +17,83 @@ var albumControllers = angular.module('albumControllers', []);
 albumControllers.controller('retrieveCollectionController', ['$scope', 'albumResourceService',
   function ($scope, albumResourceService) {
     
-    $scope.collection = albumResourceService.query();
-    $scope.orderProp = 'artist';
+    /*
+     * pull down the entire collection once when
+     * the page first loads
+     */
     
-    console.log('Albums retrieved');
+    $scope.collection = albumResourceService.query(function () {
+      console.log('Albums retrieved');
+    });
+    
+    /* placeholder for albums without cover art */
+    
+    $scope.placeholder = '/images/artwork/place holder.png';
+    
+    /* initializing the dropdown menu */
+    
+    $scope.orderProp = 'artist';
+    $scope.options = ['Title', 'Artist', 'Year'];
+    $scope.reverse = false;
+    
+    /* logic for the dropdown menu */
     
     $scope.order = function (input) {
       switch(input) {
         case 'Title':
           $scope.orderProp = 'title';
+          $scope.reverse = !$scope.reverse;
           break;
         case 'Artist':
           $scope.orderProp = 'artist';
+          $scope.reverse = !$scope.reverse;
           break;
         case 'Year':
           $scope.orderProp = 'year';
+          $scope.reverse = !$scope.reverse;
           break;
         default:
           $scope.orderProp = 'artist';
       }
     };
     
+    /*
+     * once the collection is populated create an
+     * array of all the artists
+     */
+    
+    $scope.collection.$promise.then(function () {
+      
+      var artists = [];
+      
+      for(i = 0; i < $scope.collection.length; i++) {
+        artists.push($scope.collection[i].artist);
+      }
+      
+      /* filter duplicate atrists */
+      
+      $scope.artists = artists.filter(function (element, position) {
+        return artists.indexOf(element) === position;
+      });
+      
+    });
+    
+    /*
+     * when the user selects an artist, populate
+     * an object with all the albums by that
+     * artist
+     */
+    
+    $scope.viewAlbumsBy = function (artist) {
+      
+      $scope.albumsByArtist = [];
+      
+      for(i = 0; i < $scope.collection.length; i++) {        
+        if($scope.collection[i].artist === artist) {
+          $scope.albumsByArtist.push($scope.collection[i]);
+        }
+      }
+    };
   }
 ]);
 
@@ -50,8 +106,9 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
 
 albumControllers.controller('retrieveAlbumController', ['$scope', '$routeParams', 'albumResourceService',
   function ($scope, $routeParams, albumResourceService) {
-    $scope.album = albumResourceService.get({albumTitle: $routeParams.albumTitle});
-    console.log('Album retrieved');
+    $scope.album = albumResourceService.get({albumTitle: $routeParams.albumTitle}, function () {
+      console.log('Album retrieved');
+    });
   }
 ]);
 
@@ -80,7 +137,7 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
           artist  : '',
           genre   : '',
           tracks  : [],
-          artwork : $scope.placeHolder,
+          artwork : $scope.placeholder,
           year    : ''
         }
       }
@@ -111,18 +168,39 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
           $scope.collection.push(album);
         }
         
+        /*
+         * instead of pulling down the entire
+         * collection from the server just update
+         * the scope
+         */
+        
         else {
-          $scope.album.title    = album.title;
-          $scope.album.artist   = album.artist;
-          $scope.album.genre    = album.genre;
-          $scope.album.tracks   = album.tracks;
-          $scope.album.artwork  = album.artwork;
-          $scope.album.year     = album.year;
+          
+          var original = $scope.album.title ;
+          
+          $scope.album.title = album.title;
+          $scope.album.artist = album.artist;
+          $scope.album.genre = album.genre;
+          $scope.album.tracks = album.tracks;
+          $scope.album.artwork = album.artwork;
+          $scope.album.year = album.year;
+          
+          for(i = 0; i < $scope.collection.length; i++) {
+            if($scope.collection[i].title === original) {
+              
+              $scope.collection[i].title = album.title;
+              $scope.collection[i].artist = album.artist;
+              $scope.collection[i].genre = album.genre;
+              $scope.collection[i].tracks = album.tracks;
+              $scope.collection[i].artwork = album.artwork;
+              $scope.collection[i].year = album.year;
+              
+              break;
+            }
+          }
         }
       });
-      
     };
-    
   }
 ]);
 
@@ -170,7 +248,7 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
        * option to add more tracks
        */
       
-      if($scope.trackListing.tracks.length == 1) {
+      if($scope.trackListing.tracks.length === 1) {
         delete $scope.trackListing.tracks[index].track;
       }
       
@@ -229,11 +307,11 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
          * scope will be updated before the callback
          */
         
-        var originalTitle = album.title;
+        var original = album.title;
         
-        var updateAlbum = albumResourceService.get({albumTitle: originalTitle}, function () {
+        albumResourceService.get({albumTitle: original}, function () {
           
-          albumResourceService.update({albumTitle: originalTitle}, $scope.album);
+          albumResourceService.update({albumTitle: original}, $scope.album);
           
           console.log('Album updated');
         });
@@ -266,8 +344,22 @@ albumControllers.controller('removeAlbumModalController',  ['$scope', '$modal',
           }
         }
       });
+      
+      modalInstance.result.then(function (album) {
+        
+        /*
+         * update the scope after the user removes
+         * an album
+         */
+        
+        for(i = 0; i < $scope.collection.length; i++) {
+          if($scope.collection[i].title === album.title) {
+            $scope.collection.splice(i,1);
+            break;
+          }
+        }
+      });
     };
-    
   }
 ]);
 
@@ -292,7 +384,7 @@ albumControllers.controller('removeAlbumController', ['$scope', '$location', '$m
         console.log('Album removed');
       });
       
-      $modalInstance.close();
+      $modalInstance.close(album);
     };
     
     $scope.cancel = function () {
@@ -302,11 +394,12 @@ albumControllers.controller('removeAlbumController', ['$scope', '$location', '$m
   }
 ]);
 
-/* initializes the scope of the dropdown menu */
-
-albumControllers.controller('dropdownController', ['$scope',
+albumControllers.controller('artistViewController', ['$scope',
   function ($scope) {
-    $scope.options = ['Title', 'Artist', 'Year'];
+    
+    $scope.getAlbums = function () {
+      return $scope.albumsByArtist ? $scope.albumsByArtist : $scope.collection;
+    }
   }
 ]);
 
@@ -316,15 +409,15 @@ albumControllers.controller('inputValidationController', ['$scope',
   function ($scope) {
     
     /* 
-     * force user to enter numeric characters for
-     * the year
+     * force the user to enter numeric characters
+     * for the year
      */
     
     $scope.keyValidate = function (key) {
       
       var charecterCode = (key.which) ? key.which : event.keyCode
       
-      if (charecterCode < 48 || charecterCode > 57) {
+      if(charecterCode < 48 || charecterCode > 57) {
         
         if(key.preventDefault()) {
           key.preventDefault();

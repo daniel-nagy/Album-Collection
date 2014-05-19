@@ -5,7 +5,7 @@
   <a class="page-nav-items active" href>Songs</a>
   
   <!-- view navigation dropdown -->
-  <span class="page-nav-items page-nav-dropdown" ng-controller="dropdownController">
+  <span class="page-nav-items page-nav-dropdown">
     <span class="dropdown" on-toggle="toggled(open)">
       <a class="dropdown-toggle" href>
         {{orderProp | capitalizeFilter}} <span class="caret"></span>
@@ -21,20 +21,20 @@
 
 <!-- songs display -->
 <table class="table table-striped songs-view-table">
-  <tbody ng-repeat="album in collection | orderBy:orderProp">
+  <tbody ng-repeat="album in collection | orderBy:'tracks'">
     <tr ng-repeat="track in album.tracks | filter:query">
         
       <td class="col-xs-8 col-sm-8 col-md-8">
         
         <!-- album art -->
         <a class="thumbnail songs-view-album-art" href="#/albums/{{album.title}}">
-          <img ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
+          <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
         </a>
         
         <!-- title and artist -->
         <div class="songs-view-track-artist-container">
           <p class="songs-view-track">{{track}}</p>
-          <a class="songs-view-artist" href>{{album.artist}}</a>
+          <a class="songs-view-artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}}</a>
         </div>
         
       </td>
@@ -43,7 +43,7 @@
         
         <!-- album and genre -->
         <a class="songs-view-album" href="#/albums/{{album.title}}">{{album.title}}</a>
-        <div class="songs-view-genre">{{album.genre}}</div> 
+        <div class="songs-view-genre">{{album.genre}}</div>
         
       </td>
       

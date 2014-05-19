@@ -44,6 +44,13 @@ a:active {
 /* header */
 
 .page-header {
+  position: fixed;
+  width: 100%;
+  height: 150px;
+  top: 0;
+  z-index: 1;
+  padding: 50px 0;
+  background-color: #f9f8f4;
   border: 0;
   text-align: center;
   font-weight: 400;
@@ -137,7 +144,11 @@ a:active {
 .albums-nav,
 .artists-nav,
 .songs-nav {
-  position: relative;
+  position: fixed;
+  width: 100%;
+  top: 150px;
+  z-index: 1;
+  background-color: #f9f8f4;
   padding: 0 20px 16px;
   border-bottom: 1px #cdcdcd solid;
 }
@@ -155,19 +166,19 @@ a:active {
 
 .albums-nav:after,
 .albums-nav:before {
-  bottom: -2px;
+  bottom: -1px;
   left: 63px;
 }
 
 .artists-nav:after,
 .artists-nav:before {
-  bottom: -2px;
+  bottom: -1px;
   left: 149px;
 }
 
 .songs-nav:after,
 .songs-nav:before {
-  bottom: -2px;
+  bottom: -1px;
   left: 231px;
 }
 
@@ -207,6 +218,7 @@ a:active {
 .thumbnail-view-container {
   position: relative;
   padding: 0 0 6px;
+  margin: 145px 0 0;
   border-bottom: 1px #cdcdcd solid;
   background-color: #f9f9f9;
 }
@@ -232,36 +244,75 @@ a:active {
 /*---------------------------------------------------------*/
 /* artist view */
 
-.artist-view-title-artist-container {
-  display: inline-block;
-  vertical-align: top;
-  padding: 0 10px 0 0;
-  max-width: 75%;
+.artist-list-table-container,
+.albums-by-artist-table-container {
+  max-height: 100vh;
+  overflow-y: scroll;
 }
 
-.artist-view-album-art {
-  width: 250px;
-  margin: 0 12px 0 0;
+.artist-list-table-container {
+  max-width: 30%;
+  float: left;
 }
 
-.artist-view-mobile-art {
-  display: none;
-  margin: 0 0 12px;
+.albums-by-artist-table-container {
+  max-width: 70%;
+  float: right;
+}
+
+.artist-list-table,
+.albums-by-artist-table {
+  position: relative;
+  min-height: 100vh;
+  margin: 145px 0 0;
+  display: inline-table;
+  table-layout: fixed;
+  border-bottom: 0;
+}
+
+.artist-list-table {
+  background-color: #f9f9f9;
+  border-right: 1px #cdcdcd solid;
+}
+
+.artist-list-table a {
+  padding: 15px 0;
+  font-size: 18px;
+}
+
+.albums-by-artist-table td:nth-child(1) {
+  width: 110px;
+}
+
+.artist-view-artwork {
+  margin: 0;
   width: 100px;
 }
 
-@media screen and (max-width: 768px) {
-  .artist-view-table {
-    position: relative;
-    table-layout: fixed;
-  }
-  
-  .artist-view-album-art {
+.artist-view-title-year-container {
+  display: table;
+  height: 60px;
+}
+
+.artist-view-title {
+  display: table-cell;
+  padding: 0 0 0 12px;
+  vertical-align: middle;
+  font-size: 24px;
+  padding: 0 0 0 12px;
+}
+
+.artist-view-year {
+  display: table-cell;
+  padding: 0 12px 0 0;
+  vertical-align: middle;
+  text-align: right;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {    
+  .albums-by-artist-table td:nth-child(1) {
     display: none;
-  }
-  
-  .artist-view-mobile-art {
-    display: inline-block;
   }
 }
 
@@ -271,6 +322,7 @@ a:active {
 .songs-view-table {
   position: relative;
   table-layout: fixed;
+  margin: 145px 0 0;
 }
 
 .songs-view-album-art {
@@ -333,6 +385,7 @@ a:active {
 
 .album-view-table {
   background-color: #f9f9f9;
+  margin: 145px 0 0;
 }
 
 .album-view-table > tbody > tr > td {

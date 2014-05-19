@@ -5,7 +5,7 @@
   <a class="page-nav-items" href="#/albums/songs">Songs</a>
   
   <!-- view navigation dropdown -->
-  <span class="page-nav-items page-nav-dropdown" ng-controller="dropdownController">
+  <span class="page-nav-items page-nav-dropdown">
     <span class="dropdown" on-toggle="toggled(open)">
       <a class="dropdown-toggle" href>
         {{orderProp | capitalizeFilter}} <span class="caret"></span>
@@ -32,16 +32,16 @@
     
   </span>
   
-  <span class="col-xs-4 col-sm-3 col-md-2" ng-repeat="album in collection | filter:query | orderBy:orderProp">
+  <span class="col-xs-4 col-sm-3 col-md-2" ng-repeat="album in collection | filter:query | orderBy:orderProp:reverse">
     
     <!-- album thumbnails -->
     <a class="thumbnail thumbnail-view-album-art" href="#/albums/{{album.title}}">
-      <img ng-src="{{album.artwork}}" place-holder="{{placeHolder}}">
+      <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
     </a>
     
     <!-- album and artist -->
     <a class="thumbnail-view-title" href="#/albums/{{album.title}}">{{album.title}} {{album.year | yearFilter}}</a>
-    <a class="thumbnail-view-artist" href=>{{album.artist}}</a>
+    <a class="thumbnail-view-artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}}</a>
     
   </span>
 </div>
