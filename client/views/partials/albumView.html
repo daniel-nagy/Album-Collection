@@ -5,44 +5,46 @@
   <a class="page-nav-items" href="#/albums/songs">Songs</a>
 </div>
 
-<!-- album display -->
-<table class="table album-view-table">
-  <tbody>
-    <tr>
-      <td>
+<!-- album view -->
+<div ng-controller="albumViewController" ng-style="fitToWindow()" window-height>
+  <table class="table album-view">
+    <tbody>
+      <tr>
+        <td>
+          
+          <!-- album art -->
+          <img class="thumbnail" ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
+          
+        </td>
         
-        <!-- album art -->
-        <img class="thumbnail album-view-album-art" ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
-        
-      </td>
-      
-      <td class="col-xs-12 col-sm-12 col-md-12">
-        
-        <!-- mobile album art -->
-        <img class="thumbnail album-view-mobile-art" ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
-        
-        <!-- album and artist -->
-        <p class="album-view-title">{{album.title}}</p>
-        <a class="album-view-artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}} {{album.year | yearFilter}}</a>
-        
-        <!-- track-listing -->
-        <ol class="album-view-tracks col-xs-12 col-sm-12 col-md-12">
-          <li ng-repeat="track in album.tracks | filter:query">
-            <p>{{'\u00A0'}} {{track}}</p>
-          </li>
-        </ol>
-        
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="album-view-edit col-xs-12 col-sm-12 col-md-12" ng-init="isNewAlbum = false;">
+        <td class="col-xs-12 col-sm-12 col-md-12">
+          
+          <!-- mobile album art -->
+          <img class="thumbnail thumbnail-mobile" ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
+          
+          <!-- album and artist -->
+          <p class="title">{{album.title}}</p>
+          <a class="artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}} {{album.year | yearFilter}}</a>
+          
+          <!-- tracklisting -->
+          <ol class="tracks col-xs-12 col-sm-12 col-md-12">
+            <li ng-repeat="track in album.tracks | filter:query">
+              <p>{{'\u00A0'}} {{track}}</p>
+            </li>
+          </ol>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
   
-  <!-- delete -->
-  <a class="glyphicon glyphicon-trash" ng-controller="removeAlbumModalController" ng-click="removeAlbum()" href></a>
-
-  <!-- edit -->
-  <a class="glyphicon glyphicon-pencil" ng-controller="updateAlbumModalController" ng-click="updateAlbum()" href></a>
-  
+  <div class="edit col-xs-12 col-sm-12 col-md-12" ng-init="isNewAlbum = false;">
+    
+    <!-- delete -->
+    <a class="glyphicon glyphicon-trash" ng-controller="removeAlbumModalController" ng-click="removeAlbum()" href></a>
+    
+    <!-- edit -->
+    <a class="glyphicon glyphicon-pencil" ng-controller="updateAlbumModalController" ng-click="updateAlbum()" href></a>
+    
+  </div>
 </div>

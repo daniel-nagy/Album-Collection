@@ -9,7 +9,7 @@
 
   <!-- body -->
   <div class="modal-body update-album">
-    <table class="table update-table">
+    <table class="table">
       <tbody>
         <tr>
           <td class="col-xs-12 col-sm-12 col-md-12" ng-controller="inputValidationController">
@@ -45,16 +45,16 @@
             </div>
             
             <!-- album information -->
-            <input class="album-view-title" type="text" placeholder="Title" ng-model="album.title">
-            <input class="album-view-artist" type="text" placeholder="Artist" ng-model="album.artist">
-            <input class="album-view-genre" type="text" placeholder="Genre" ng-model="album.genre">
-            <input class="album-view-year" type="text" ng-keypress="keyValidate($event)" maxlength="4" placeholder="Year" ng-model="album.year">
+            <input class="title" type="text" placeholder="Title" ng-model="album.title">
+            <input class="artist" type="text" placeholder="Artist" ng-model="album.artist">
+            <input class="genre" type="text" placeholder="Genre" ng-model="album.genre">
+            <input class="year" type="text" ng-keypress="keyValidate($event)" maxlength="4" placeholder="Year" ng-model="album.year">
             
-            <!-- track listing -->
-            <ol class="update-album-tracks col-xs-12 col-sm-12 col-md-12">
+            <!-- tracklisting -->
+            <ol class="track-listing col-xs-12 col-sm-12 col-md-12">
               <li ng-repeat="tracks in trackListing.tracks">
                 <input type="text" placeholder="Track {{$index + 1}}" ng-model="tracks.track">
-                <span class="update-album-add-remove-track">
+                <span class="add-remove-track">
                   <a class="glyphicon glyphicon-minus" ng-click="removeTrack($index)" href></a>
                   <a class="glyphicon glyphicon-plus" ng-click="addTrack($index)" href></a>
                 </span>

@@ -19,34 +19,36 @@
   </span>
 </div>
 
-<!-- songs display -->
-<table class="table table-striped songs-view-table">
-  <tbody ng-repeat="album in collection | orderBy:'tracks'">
-    <tr ng-repeat="track in album.tracks | filter:query">
+<!-- songs view -->
+<div ng-controller="songsViewController" ng-style="fitToWindow()" window-height>
+  <table class="table songs-view">
+    <tbody ng-repeat="album in collection | filter:query">
+      <tr ng-repeat="track in album.tracks | filter:query | orderBy:'toString()'">
+        <td>
+          
+          <!-- album artwork -->
+          <a class="thumbnail" href="#/albums/{{album.title}}">
+            <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
+          </a>
+          
+        </td>  
+       
+        <td class="col-xs-12 col-sm-8 col-md-8">
+          
+          <!-- title and artist -->
+          <p class="track">{{track}}</p>
+          <a class="artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}}</a>
+          
+        </td>
         
-      <td class="col-xs-8 col-sm-8 col-md-8">
-        
-        <!-- album art -->
-        <a class="thumbnail songs-view-album-art" href="#/albums/{{album.title}}">
-          <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
-        </a>
-        
-        <!-- title and artist -->
-        <div class="songs-view-track-artist-container">
-          <p class="songs-view-track">{{track}}</p>
-          <a class="songs-view-artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}}</a>
-        </div>
-        
-      </td>
-      
-      <td class="vert-align col-xs-4 col-sm-4 col-md-4">
-        
-        <!-- album and genre -->
-        <a class="songs-view-album" href="#/albums/{{album.title}}">{{album.title}}</a>
-        <div class="songs-view-genre">{{album.genre}}</div>
-        
-      </td>
-      
-    </tr>
-  </tbody>
-</table>
+        <td class="col-xs-4 col-sm-4 col-md-4">
+          
+          <!-- album and genre -->
+          <a class="album" href="#/albums/{{album.title}}">{{album.title}}</a>
+          <div class="genre">{{album.genre}}</div>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

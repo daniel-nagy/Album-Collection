@@ -19,29 +19,27 @@
   </span>
 </div>
 
-<!-- album display -->
-<div class="thumbnail-view-container col-xs-12 col-sm-12 col-md-12">
+<!-- albums view -->
+<div class="albums-view col-xs-12 col-sm-12 col-md-12" ng-controller="albumsViewController" ng-style="fitToWindow()" window-height>
   
-  <!-- dummy album -->
+  <!--create album -->
   <span class="col-xs-4 col-sm-3 col-md-2" ng-init="isNewAlbum = true;">
-    
-    <!--create album -->
-    <a class="thumbnail thumbnail-view-album-art" ng-controller="updateAlbumModalController" ng-click="updateAlbum()" href>
+    <a class="thumbnail" ng-controller="updateAlbumModalController" ng-click="updateAlbum()" href>
       <img ng-src="/images/artwork/add-album.png">
     </a>
-    
   </span>
   
   <span class="col-xs-4 col-sm-3 col-md-2" ng-repeat="album in collection | filter:query | orderBy:orderProp:reverse">
     
     <!-- album thumbnails -->
-    <a class="thumbnail thumbnail-view-album-art" href="#/albums/{{album.title}}">
+    <a class="thumbnail" href="#/albums/{{album.title}}">
       <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
     </a>
     
     <!-- album and artist -->
-    <a class="thumbnail-view-title" href="#/albums/{{album.title}}">{{album.title}} {{album.year | yearFilter}}</a>
-    <a class="thumbnail-view-artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}}</a>
+    <a class="title" href="#/albums/{{album.title}}">{{album.title}} {{album.year | yearFilter}}</a>
+    <a class="artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}}</a>
     
   </span>
+  
 </div>

@@ -19,37 +19,44 @@
   </span>
 </div>
 
-<div ng-controller="artistViewController">
-  
-  <div class="artist-list-table-container">
+<!-- artist view -->
+<div class="artist-view" ng-controller="artistViewController" window-height>
+  <div class="artist-list-container" ng-style="fitToWindow()">
     
     <!-- artists lists -->
-    <table class="table artist-list-table table-hover col-xs-12 col-sm-12 col-md-12">
+    <table class="table artist-list table-hover col-xs-12 col-sm-12 col-md-12">
       <tbody>
+        <td ng-click="clearAlbumsByArtist()">
+          <a>All Artists</a>
+        </td>
         <tr ng-repeat="artist in artists | filter:query | orderBy:'toString()'">
-          <td class="vert-align" ng-click="viewAlbumsBy(artist)">
+          <td ng-click="viewAlbumsBy(artist)">
             <a>{{artist}}</a>
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> 
     
   </div>
   
-  <div class="albums-by-artist-table-container">
+  <div class="albums-by-artist-container" ng-style="fitToWindow()">
+    
+    <!-- album artist and album count -->
+    <div class="album-artist-container col-xs-12 col-sm-12 col-md-12">
+      <div class="album-artist">
+        <div class="artist">{{albumsByArtist ? albumsByArtist[0].artist : 'All Artists'}}</div>
+        <div class="album-count">{{albumCount()}}</div>
+      </div>
+    </div>
     
     <!-- albums by artist -->
-    <table class="table table-striped albums-by-artist-table col-xs-12 col-sm-12 col-md-12">
-      
-      <!-- {{albumsByArtist ? albumsByArtist[0].artist : 'All Albums'}} -->
-      
+    <table class="table albums-by-artist col-xs-12 col-sm-12 col-md-12">
       <tbody>
-        
         <tr ng-repeat="album in getAlbums() | filter:query | orderBy:orderProp:reverse">
           <td>
             
-            <!-- mobile album art -->
-            <a class="thumbnail artist-view-artwork" href="#/albums/{{album.title}}">
+            <!-- album artwork -->
+            <a class="thumbnail" href="#/albums/{{album.title}}">
               <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
             </a>
             
@@ -57,16 +64,14 @@
           
           <td class="col-xs-12 col-sm-12 col-md-12">
             
-            <div class="artist-view-title-year-container col-xs-12 col-sm-12 col-md-12">
-              
-              <!-- album and artist -->
-              <a class="artist-view-title" href="#/albums/{{album.title}}">{{album.title}}</a>
-              <p class="artist-view-year" href>{{album.year}}</p>
-              
+            <!-- album -->
+            <div class="album-title-container col-xs-12 col-sm-12 col-md-12">
+              <a class="title" href="#/albums/{{album.title}}">{{album.title}}</a>
+              <p class="year" href>{{album.year}}</p>
             </div>
             
-            <!-- track-listing -->
-            <ol class="album-view-tracks">
+            <!-- tracklisting -->
+            <ol class="tracks">
               <li ng-repeat="track in album.tracks | filter:query">
                 <p>{{'\u00A0'}} {{track}}</p>
               </li>
@@ -78,5 +83,4 @@
     </table>
     
   </div>
-  
 </div>

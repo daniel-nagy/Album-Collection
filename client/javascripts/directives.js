@@ -80,3 +80,24 @@ albumDirectives.directive('droppable', function () {
     }
   };
 });
+
+/*
+ * forces fixed views to maintain the current
+ * height of the window
+ */
+
+albumDirectives.directive('windowHeight', function ($window) {
+  
+  return {
+    link: function (scope) {
+      
+      scope.height = $window.innerHeight;
+      
+      $window.addEventListener('resize', function () {
+        scope.height = $window.innerHeight;
+        scope.fitToWindow();
+        scope.$apply();
+      });
+    }
+  };
+});

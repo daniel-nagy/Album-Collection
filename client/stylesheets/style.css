@@ -69,12 +69,6 @@ a:active {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  position: relative;
-  border-top: 0;
-  border-bottom: 1px #cdcdcd solid;
-}
-
-.table > tbody + tbody {
   border-top: 0;
 }
 
@@ -86,16 +80,8 @@ a:active {
   text-overflow: ellipsis;
 }
 
-.table tbody > tr > td.vert-align
-{
-  vertical-align: middle;
-}
-
-/*---------------------------------------------------------*/
-/* thumbnail */
-
-.thumbnail {
-  margin: 0;
+.table > tbody + tbody {
+  border-top: 0;
 }
 
 /*---------------------------------------------------------*/
@@ -147,7 +133,7 @@ a:active {
   position: fixed;
   width: 100%;
   top: 150px;
-  z-index: 1;
+  z-index: 2;
   background-color: #f9f8f4;
   padding: 0 20px 16px;
   border-bottom: 1px #cdcdcd solid;
@@ -198,12 +184,12 @@ a:active {
   margin-left: -16px;
 }
 
-.page-nav .page-nav-items {
+.page-nav-items {
   font-size: 20px;
   padding: 0 10px;
 }
 
-.page-nav .page-nav-dropdown {
+.page-nav-dropdown {
   float: right;
 }
 
@@ -213,28 +199,18 @@ a:active {
 }
 
 /*---------------------------------------------------------*/
-/* thumbnails view */
+/* albums view */
 
-.thumbnail-view-container {
-  position: relative;
-  padding: 0 0 6px;
-  margin: 145px 0 0;
-  border-bottom: 1px #cdcdcd solid;
-  background-color: #f9f9f9;
+.albums-view {
+  padding: 0 0 20px;
 }
 
-.thumbnail-view-album-art {
-  margin: 8px 0 2px;
+.albums-view .thumbnail {
+  margin: 20px 0 2px;
 }
 
-.create-album {
-  font-size: 50px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.thumbnail-view-title,
-.thumbnail-view-artist {
+.albums-view .title,
+.albums-view .artist {
   display: block;
   white-space: nowrap;
   overflow: hidden;
@@ -244,65 +220,77 @@ a:active {
 /*---------------------------------------------------------*/
 /* artist view */
 
-.artist-list-table-container,
-.albums-by-artist-table-container {
-  max-height: 100vh;
-  overflow-y: scroll;
-}
-
-.artist-list-table-container {
+.artist-list-container {
   max-width: 30%;
-  float: left;
-}
-
-.albums-by-artist-table-container {
-  max-width: 70%;
-  float: right;
-}
-
-.artist-list-table,
-.albums-by-artist-table {
-  position: relative;
-  min-height: 100vh;
-  margin: 145px 0 0;
-  display: inline-table;
-  table-layout: fixed;
-  border-bottom: 0;
-}
-
-.artist-list-table {
-  background-color: #f9f9f9;
   border-right: 1px #cdcdcd solid;
 }
 
-.artist-list-table a {
-  padding: 15px 0;
+.artist-list,
+.albums-by-artist {
+  table-layout: fixed;
+}
+
+.artist-list > tbody > tr > td {
+  vertical-align: middle;
+  padding-left: 16px;
   font-size: 18px;
 }
 
-.albums-by-artist-table td:nth-child(1) {
+.album-artist-container {
+  position: fixed;
+  display: table;
+  z-index: 1;
+  height: 80px;
+  background-color: rgba(249, 249, 249, 0.9);
+  border-bottom: 1px #cdcdcd solid;
+}
+
+.album-artist {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.artist-view .artist {
+  display: block;
+  font-size: 24px;
+}
+
+.album-count {
+  display: block;
+  font-size: 16px;  
+}
+
+.albums-by-artist-container {
+  max-width: 70%;
+  right: 0;
+}
+
+.albums-by-artist {
+  margin: 80px 0 0;
+}
+
+.albums-by-artist td:nth-child(1) {
   width: 110px;
 }
 
-.artist-view-artwork {
+.artist-view .thumbnail {
   margin: 0;
   width: 100px;
 }
 
-.artist-view-title-year-container {
+.album-title-container {
   display: table;
   height: 60px;
 }
 
-.artist-view-title {
+.artist-view .title {
   display: table-cell;
-  padding: 0 0 0 12px;
   vertical-align: middle;
   font-size: 24px;
   padding: 0 0 0 12px;
 }
 
-.artist-view-year {
+.artist-view .year {
   display: table-cell;
   padding: 0 12px 0 0;
   vertical-align: middle;
@@ -311,7 +299,7 @@ a:active {
 }
 
 @media screen and (max-width: 768px) {    
-  .albums-by-artist-table td:nth-child(1) {
+  .albums-by-artist td:nth-child(1) {
     display: none;
   }
 }
@@ -319,63 +307,66 @@ a:active {
 /*---------------------------------------------------------*/
 /* songs view */
 
-.songs-view-table {
-  position: relative;
+.songs-view {
   table-layout: fixed;
-  margin: 145px 0 0;
 }
 
-.songs-view-album-art {
-  display: inline-block;
+.songs-view > tbody > tr > td {
+  border-bottom: 1px #cdcdcd solid;
   vertical-align: middle;
+}
+
+.songs-view td:nth-child(1) {
+  width: 130px;
+  padding-left: 20px;
+}
+
+.songs-view .thumbnail {
+  margin: 0;
   width: 100px;
-  margin: 0 20px;
 }
 
-.songs-view-track-artist-container {
-  display: inline-block;
-  vertical-align: middle;
-  padding: 0 10px 0 0;
-  max-width:75%;
-  overflow: ellipsis;
-}
-
-.songs-view-track {
+.songs-view .track {
   margin: 0;
   font-size: 28px;
 }
 
-.songs-view-artist,
-.songs-view-album {
+.songs-view .artist,
+.songs-view .album {
   font-size: 22px;
 }
 
-.songs-view-genre {
+.songs-view .genre {
   font-size: 18px;
 }
 
-.songs-view-album,
-.songs-view-genre {
+.songs-view .album,
+.songs-view .genre {
   display: block;
   margin: 0 20px 0 0;
   text-align: right;
 }
 
 @media screen and (max-width: 768px) {
-  .songs-view-table td:nth-child(2) {
+  .songs-view td:nth-child(3) {
     display: none;
   }
   
-  .songs-view-album-art {
-    margin: 0 10px;
+  .songs-view td:nth-child(1) {
+    width: 100px;
+    padding-left: 15px;
+  }
+  
+  .songs-view .thumbnail {
     width: 75px;
   }
   
-  .songs-view-track {
+  .songs-view .track {
     font-size: 24px;
+    padding-right: 15px;
   }
   
-  .songs-view-artist {
+  .songs-view .artist {
     font-size: 18px;
   }
 }
@@ -383,94 +374,85 @@ a:active {
 /*---------------------------------------------------------*/
 /* album view */
 
-.album-view-table {
+.album-view {
+  table-layout: fixed;
   background-color: #f9f9f9;
-  margin: 145px 0 0;
 }
 
-.album-view-table > tbody > tr > td {
-  border-bottom: 0;
+.album-view > tbody > tr > td:nth-child(1) {
+  width: 262px;
 }
 
-.album-view-title,
-.album-view-artist,
-.album-view-year,
-.album-view-genre {
+.album-view .title {
   display: block;
-}
-
-.album-view-title {
   font-size: 24px;
   margin: 0;
 }
 
-.album-view-artist,
-.album-view-year,
-.album-view-genre {
+.album-view .artist {
+  display: block;
   font-size: 16px;
   margin: 0 0 12px;
 }
 
-.album-view-album-art {
+.album-view .thumbnail {
   width: 250px;
 }
 
-.album-view-mobile-art {
+.album-view .thumbnail-mobile {
   display: none;
   width: 300px;
 }
 
-.album-view-tracks li {
-  list-style-position: inside;
-}
-
-.album-view-tracks {
+.tracks {
   border-top: 1px #e5e5e5 solid;
   font-size: 16px;
   padding: 12px 12px 0;
   -webkit-column-count: 2;
 }
 
-.album-view-edit {
+.tracks li {
+  list-style-position: inside;
+}
+
+.edit {
   border-top: 1px #cdcdcd solid;
   padding: 16px 20px;
 }
 
-.album-view-edit a {
+.edit a {
   float: right;
   font-size: 24px;
   padding: 0 10px;
 }
 
 @media screen and (max-width: 768px) {
-  .album-view-table {
+  .album-view {
     position: relative;
     table-layout: fixed;
   }
   
-  .album-view-title,
-  .album-view-artist,
-  .album-view-genre,
-  .album-view-year {
-    padding: 0 0 0 12px;
-  }
-
-  .album-view-table td:nth-child(1) {
+  .album-view td:nth-child(1) {
     display: none;
   }
   
-  .album-view-tracks {
+  .album-view .title,
+  .album-view .artist {
+    padding: 0 0 0 10px;
+  }
+  
+  .tracks {
     -webkit-column-count: 1;
     border-top: 0;
   }
   
-  .album-view-tracks p {
+  .tracks p {
     border-top: 1px #cdcdcd solid;
     margin: 0;
     padding: 8px;
   }
 
-  .album-view-mobile-art {
+  .album-view .thumbnail-mobile {
     display: block;
     margin-top: 0;
     margin-right: auto;
@@ -494,13 +476,9 @@ a:active {
 /*---------------------------------------------------------*/
 /* update album view */
 
-.update-table {
+.update-album {
   position: relative;
   table-layout: fixed;
-}
-
-.update-table > tbody > tr > td {
-  border-bottom: 0;
 }
 
 .update-album-art-container {
@@ -528,14 +506,8 @@ a:active {
   vertical-align: middle;
 }
 
-.upload-album-art:hover {
-  opacity: 1;
-}
-
-.upload-album-art:hover .upload-btn {
-  opacity: 1;
-}
-
+.upload-album-art:hover,
+.upload-album-art:hover .upload-btn,
 .upload-album-art:hover .progress-striped {
   opacity: 1;
 }
@@ -588,10 +560,18 @@ a:active {
   opacity: 0;
 }
 
-.update-album .album-view-artist,
-.update-album .album-view-year,
-.update-album .album-view-genre {
+.update-album .title {
+  display: block;
   margin: 0;
+  font-size: 24px;
+}
+
+.update-album .artist,
+.update-album .year,
+.update-album .genre {
+  display: block;
+  margin: 0;
+  font-size: 16px;
 }
 
 .update-album input,
@@ -603,36 +583,33 @@ a:active {
   text-overflow: ellipsis;
 }
 
-.update-album input:hover,
-.update-album input:focus {
-  cursor: default;
-}
-
 .update-album input:hover {
   color: #008ec4;
+  cursor: default;
 }
 
 .update-album input:focus {
   color: #fb007a;
+  cursor: default;
 }
 
-.update-album-tracks {
+.update-album .track-listing {
   margin: 12px 0 0 12px;
   font-size: 16px;
 }
 
-.update-album-tracks input,
-.update-album-tracks input:focus {
+.update-album .track-listing input,
+.update-album .track-listing input:focus {
   padding: 8px 0;
   border-top: 1px #cdcdcd solid;
 }
 
-.update-album-add-remove-track {
+.update-album .add-remove-track {
   font-size: 12px;
   width: 12%;
   text-align: center;
 }
 
-.update-album-add-remove-track a {
+.update-album .add-remove-track a {
   width: 7%;
 }

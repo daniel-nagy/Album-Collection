@@ -94,6 +94,14 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
         }
       }
     };
+    
+    /* clears the artist when the user selects
+     * all artists
+     */
+    
+    $scope.clearAlbumsByArtist = function () {
+      $scope.albumsByArtist = '';
+    };
   }
 ]);
 
@@ -394,12 +402,105 @@ albumControllers.controller('removeAlbumController', ['$scope', '$location', '$m
   }
 ]);
 
+/* provides support for the albums view */
+
+albumControllers.controller('albumsViewController', ['$scope',
+  function ($scope) {
+    
+    /* 
+     * resizes fixed views to fit the current
+     * window to take advatntage of screen
+     * realestate and to scroll properly
+     */
+    
+    $scope.fitToWindow = function () {
+      return {
+        position: 'fixed',
+        height: ($scope.height - 194) + 'px',
+        'overflow-y': 'scroll',
+        margin: '145px 0 0',
+        'background-color': '#f9f9f9'
+      }
+    };
+    
+  }
+]);
+
+/* provides support for the artist view */
+
 albumControllers.controller('artistViewController', ['$scope',
   function ($scope) {
     
+    /*
+     * if an artist is in scope return albums by
+     * that artist, else return all albums
+     */
+    
     $scope.getAlbums = function () {
       return $scope.albumsByArtist ? $scope.albumsByArtist : $scope.collection;
-    }
+    };
+    
+    /* generating artist album count */
+    
+    $scope.albumCount = function () {
+      if($scope.albumsByArtist) {
+        if($scope.albumsByArtist.length === 1) {
+          return $scope.albumsByArtist.length + ' album';
+        }
+        else if($scope.albumsByArtist.length > 1) {
+          return $scope.albumsByArtist.length + ' albums';
+        }
+      }
+      else {
+        return $scope.collection.length + ' albums'
+      }
+    };
+    
+    $scope.fitToWindow = function () {
+      return {
+        position: 'fixed',
+        height: ($scope.height - 194) + 'px',
+        'overflow-y': 'scroll',
+        margin: '145px 0 0',
+        'background-color': '#f9f9f9'
+      }
+    };
+    
+  }
+]);
+
+/* provides support for the songs view */
+
+albumControllers.controller('songsViewController', ['$scope',
+  function ($scope) {
+    
+    $scope.fitToWindow = function () {
+      return {
+        position: 'fixed',
+        height: ($scope.height - 194) + 'px',
+        'overflow-y': 'scroll',
+        margin: '145px 0 0',
+        'background-color': '#f9f9f9'
+      }
+    };
+    
+  }
+]);
+
+/* provides support for the album view */
+
+albumControllers.controller('albumViewController', ['$scope',
+  function ($scope) {
+    
+    $scope.fitToWindow = function () {
+      return {
+        position: 'fixed',
+        height: ($scope.height - 194) + 'px',
+        'overflow-y': 'scroll',
+        margin: '145px 0 0',
+      }
+    };
+    
   }
 ]);
 
