@@ -8,11 +8,11 @@
   <span class="page-nav-items page-nav-dropdown">
     <span class="dropdown" on-toggle="toggled(open)">
       <a class="dropdown-toggle" href>
-        {{orderProp | capitalizeFilter}} <span class="caret"></span>
+        {{songsViewOrderProp | capitalizeFilter}} <span class="caret"></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
-        <li ng-repeat="option in options">
-          <a ng-click="order(option)" href>{{option}}</a>
+        <li ng-repeat="option in sonsViewOptions">
+          <a ng-click="songsViewOrder(option)" href>{{option}}</a>
         </li>
       </ul>
     </span>
@@ -22,30 +22,30 @@
 <!-- songs view -->
 <div ng-controller="songsViewController" ng-style="fitToWindow()" window-height>
   <table class="table songs-view">
-    <tbody ng-repeat="album in collection | filter:query">
-      <tr ng-repeat="track in album.tracks | filter:query | orderBy:'toString()'">
+    <tbody>
+      <tr ng-repeat="track in tracks | filter:query | orderBy:songsViewOrderProp:songsViewReverse">
         <td>
           
           <!-- album artwork -->
-          <a class="thumbnail" href="#/albums/{{album.title}}">
-            <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
+          <a class="thumbnail" href="#/albums/{{track.album}}">
+            <img ng-src="{{track.artwork}}" place-holder="{{placeholder}}">
           </a>
           
         </td>  
        
-        <td class="col-xs-12 col-sm-8 col-md-8">
+        <td class="col-xs-12 col-sm-6 col-md-6">
           
           <!-- title and artist -->
-          <p class="track">{{track}}</p>
-          <a class="artist" ng-click="viewAlbumsBy(album.artist)" href="#/albums/artists">{{album.artist}}</a>
+          <p class="track">{{track.title}}</p>
+          <a class="artist" ng-click="viewAlbumsBy(track.artist)" href="#/albums/artists">{{track.artist}}</a>
           
         </td>
         
-        <td class="col-xs-4 col-sm-4 col-md-4">
+        <td class="col-xs-0 col-sm-6 col-md-6">
           
           <!-- album and genre -->
-          <a class="album" href="#/albums/{{album.title}}">{{album.title}}</a>
-          <div class="genre">{{album.genre}}</div>
+          <a class="album" href="#/albums/{{track.album}}">{{track.album}}</a>
+          <div class="genre">{{track.genre}}</div>
           
         </td>
       </tr>

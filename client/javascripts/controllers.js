@@ -1,4 +1,18 @@
 /* Album Collection Controllers */
+
+/*
+ * My Todo List
+ *
+ * - When an album is created, updated, or removed
+ *   update the artist and songs arrays to
+ *   compensate for these actions without having
+ *   to pull the collection down again from the
+ *   server.
+ *
+ * - Create a modal for displaying errors to the
+ *   user, for example an album was unable to be
+ *   saved to the database.
+ */
  
 var albumControllers = angular.module('albumControllers', []);
 
@@ -32,20 +46,23 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
     
     /* initializing the dropdown menu */
     
-    $scope.orderProp = 'artist';
-    $scope.options = ['Title', 'Artist', 'Year'];
+    $scope.orderProp = 'title';
+    $scope.songsViewOrderProp = 'title';
+    $scope.options = ['Artist', 'Title', 'Year'];
+    $scope.sonsViewOptions = ['Album', 'Artist', 'Genre', 'Title'];
     $scope.reverse = false;
+    $scope.songsViewReverse = false;
     
     /* logic for the dropdown menu */
     
     $scope.order = function (input) {
       switch(input) {
-        case 'Title':
-          $scope.orderProp = 'title';
-          $scope.reverse = !$scope.reverse;
-          break;
         case 'Artist':
           $scope.orderProp = 'artist';
+          $scope.reverse = !$scope.reverse;
+          break;
+        case 'Title':
+          $scope.orderProp = 'title';
           $scope.reverse = !$scope.reverse;
           break;
         case 'Year':
@@ -53,16 +70,46 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
           $scope.reverse = !$scope.reverse;
           break;
         default:
-          $scope.orderProp = 'artist';
+          $scope.orderProp = 'title';
       }
     };
     
-    /*
-     * once the collection is populated create an
-     * array of all the artists
+    /* songs view has slightly different options */
+    
+    $scope.songsViewOrder = function (input) {
+      switch(input) {
+        case 'Album':
+          $scope.songsViewOrderProp = 'album';
+          $scope.songsViewReverse = !$scope.songsViewReverse;
+          break;
+        case 'Artist':
+          $scope.songsViewOrderProp = 'artist';
+          $scope.songsViewReverse = !$scope.songsViewReverse;
+          break;
+        case 'Genre':
+          $scope.songsViewOrderProp = 'genre';
+          $scope.songsViewReverse = !$scope.songsViewReverse;
+          break;
+        case 'Title':
+          $scope.songsViewOrderProp = 'title';
+          $scope.songsViewReverse = !$scope.songsViewReverse;
+          break;
+        default:
+          $scope.songsViewOrderProp = 'title';
+      }
+    };
+    
+    /* 
+     * waiting for the collection to be 
+     * populated
      */
     
     $scope.collection.$promise.then(function () {
+      
+      /* 
+       * creating an array of artists, this is
+       * for the artists view
+       */
       
       var artists = [];
       
@@ -75,6 +122,29 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
       $scope.artists = artists.filter(function (element, position) {
         return artists.indexOf(element) === position;
       });
+      
+      /* 
+       * creating an array of tracks, currently
+       * this is the only way I can think of to
+       * achive the songs view
+       */
+      
+      var tracks = [];
+      
+      for(i = 0; i < $scope.collection.length; i++) {
+        for(j = 0; j < $scope.collection[i].tracks.length; j++) {
+          tracks.push({
+            title   : $scope.collection[i].tracks[j],
+            album   : $scope.collection[i].title,
+            artist  : $scope.collection[i].artist,
+            genre   : $scope.collection[i].genre,
+            year    : $scope.collection[i].year,
+            artwork : $scope.collection[i].artwork
+          });
+        }
+      }
+      
+      $scope.tracks = tracks;
       
     });
     
@@ -102,6 +172,7 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
     $scope.clearAlbumsByArtist = function () {
       $scope.albumsByArtist = '';
     };
+    
   }
 ]);
 
@@ -402,7 +473,7 @@ albumControllers.controller('removeAlbumController', ['$scope', '$location', '$m
   }
 ]);
 
-/* provides support for the albums view */
+/* albums view controller */
 
 albumControllers.controller('albumsViewController', ['$scope',
   function ($scope) {
@@ -426,7 +497,7 @@ albumControllers.controller('albumsViewController', ['$scope',
   }
 ]);
 
-/* provides support for the artist view */
+/* artist view controller */
 
 albumControllers.controller('artistViewController', ['$scope',
   function ($scope) {
@@ -456,6 +527,14 @@ albumControllers.controller('artistViewController', ['$scope',
       }
     };
     
+    /* toggles the artist list on mobile devices */
+    
+    $scope.toggleArtistList = function () {
+      $scope.toggled = !$scope.toggled;
+    }
+    
+    /* fits the view to the window when resized */
+    
     $scope.fitToWindow = function () {
       return {
         position: 'fixed',
@@ -469,11 +548,13 @@ albumControllers.controller('artistViewController', ['$scope',
   }
 ]);
 
-/* provides support for the songs view */
+/* songs view controller */
 
 albumControllers.controller('songsViewController', ['$scope',
   function ($scope) {
     
+    /* fits the view to the window when resized */
+    
     $scope.fitToWindow = function () {
       return {
         position: 'fixed',
@@ -487,10 +568,12 @@ albumControllers.controller('songsViewController', ['$scope',
   }
 ]);
 
-/* provides support for the album view */
+/* album view controller */
 
 albumControllers.controller('albumViewController', ['$scope',
   function ($scope) {
+    
+    /* fits the view to the window when resized */
     
     $scope.fitToWindow = function () {
       return {

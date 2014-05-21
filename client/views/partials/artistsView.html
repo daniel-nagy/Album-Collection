@@ -20,18 +20,18 @@
 </div>
 
 <!-- artist view -->
-<div class="artist-view" ng-controller="artistViewController" window-height>
+<div class="artist-view" ng-controller="artistViewController" ng-init="toggled = false" window-height>
   <div class="artist-list-container" ng-style="fitToWindow()">
     
     <!-- artists lists -->
     <table class="table artist-list table-hover col-xs-12 col-sm-12 col-md-12">
       <tbody>
         <td ng-click="clearAlbumsByArtist()">
-          <a>All Artists</a>
+          <div>All Artists</div>
         </td>
         <tr ng-repeat="artist in artists | filter:query | orderBy:'toString()'">
           <td ng-click="viewAlbumsBy(artist)">
-            <a>{{artist}}</a>
+            <div>{{artist}}</div>
           </td>
         </tr>
       </tbody>
@@ -39,11 +39,13 @@
     
   </div>
   
-  <div class="albums-by-artist-container" ng-style="fitToWindow()">
+  <div class="albums-by-artist-container" ng-class="{'move-on-toggle' : toggled}" ng-style="fitToWindow()">
     
     <!-- album artist and album count -->
     <div class="album-artist-container col-xs-12 col-sm-12 col-md-12">
       <div class="album-artist">
+        <a class="artist-list-toggle glyphicon glyphicon-chevron-right" ng-hide="toggled" ng-click="toggleArtistList()" href></a>
+        <a class="artist-list-toggle glyphicon glyphicon-chevron-left" ng-show="toggled" ng-click="toggleArtistList()" href></a>
         <div class="artist">{{albumsByArtist ? albumsByArtist[0].artist : 'All Artists'}}</div>
         <div class="album-count">{{albumCount()}}</div>
       </div>
@@ -65,7 +67,7 @@
           <td class="col-xs-12 col-sm-12 col-md-12">
             
             <!-- album -->
-            <div class="album-title-container col-xs-12 col-sm-12 col-md-12">
+            <div class="album-title-container">
               <a class="title" href="#/albums/{{album.title}}">{{album.title}}</a>
               <p class="year" href>{{album.year}}</p>
             </div>

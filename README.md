@@ -6,13 +6,13 @@ The server is written in Groovy using the Grails Framework and the client is wri
 
 **Previews**
 
-Desktop: preview of the update modal
+Desktop:
 
-![alt text](./client/images/screen-captures/updateAlbumModal.png?raw=true)
+![alt text](./client/images/screen-captures/Preview.png?raw=true)
 
 Mobile:
 
-![alt text](./client/images/screen-captures/albumMobileViews.png?raw=true)
+![alt text](./client/images/screen-captures/Mobile-Preview.png?raw=true)
 
 **Credits**
 
