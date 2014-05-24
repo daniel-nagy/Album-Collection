@@ -95,7 +95,7 @@ albumDirectives.directive('windowHeight', function ($window) {
       
       $window.addEventListener('resize', function () {
         scope.height = $window.innerHeight;
-        scope.fitToWindow();
+        scope.fitToWindow(scope.height);
         scope.$apply();
       });
     }

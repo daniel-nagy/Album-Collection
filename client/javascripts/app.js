@@ -48,7 +48,8 @@ albumCollection.config(['$routeProvider',
         templateUrl : 'partials/albumThumbnailsView.html'
       }).
       when('/albums/artists', {
-        templateUrl : 'partials/artistsView.html'
+        templateUrl : 'partials/artistsView.html',
+        controller  : 'artistViewController'
       }).
       when('/albums/songs', {
         templateUrl : 'partials/songsView.html'

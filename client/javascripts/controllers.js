@@ -4,54 +4,92 @@
  * My Todo List
  *
  * - When an album is created, updated, or removed
- *   update the artist and songs arrays to
+ *   update the artist and tracks arrays to
  *   compensate for these actions without having
- *   to pull the collection down again from the
- *   server.
- *
- * - Create a modal for displaying errors to the
- *   user, for example an album was unable to be
- *   saved to the database.
+ *   to pull down the collection from the server.
  */
  
 var albumControllers = angular.module('albumControllers', []);
 
 /**
- * Retrieves an album collection.
+ * The main controller resides at the root scope
+ * of the application and is visible to all its
+ * children. It retrieves an album collection once
+ * when the page loads allowing the application
+ * to maintain most functionallity when
+ * disconnected from the network.
  *
- * @param $scope                  An object that
- *                                refers to the
- *                                application
- *                                model.
- * 
+ * @param $scope    An object that refers to the
+ *                  application model.
+ *
+ * @param $modal    Service for creating AngularJS
+ *                  modal windows.
+ *
  * @param albumResourceService    Provides RESTful
- *                                services.               
+ *                                services.
+ *
+ * @see             ui.bootstrap.modal
  */
 
-albumControllers.controller('retrieveCollectionController', ['$scope', 'albumResourceService',
-  function ($scope, albumResourceService) {
+albumControllers.controller('mainController', ['$scope', '$modal', 'albumResourceService',
+  function ($scope, $modal, albumResourceService) {
     
     /*
-     * pull down the entire collection once when
-     * the page first loads
+     * pull the collection once from the server
+     * when the page first loads
      */
     
     $scope.collection = albumResourceService.query(function () {
+      
       console.log('Albums retrieved');
+      
+    }, function (error) {
+      
+      console.log(error);
+      
+      /* 
+       * opening a modal to let the user know an
+       * error occurred
+       */
+      
+      $scope.openErrorModal(error, 'Unable to retrieve your album collection from the server.');
+      
     });
+    
+    /* 
+     * opens a modal to let the user know an error
+     * occurred
+     */
+    
+    $scope.openErrorModal = function (error, message) {
+      
+      var modalInstance = $modal.open({
+        templateUrl : 'modals/errorModal.html',
+        controller  : 'errorController',
+        resolve     : {
+          error     : function () {
+            return error;
+          },
+          message   : function () {
+            return message;
+          }
+        }
+      });
+      
+    };
     
     /* placeholder for albums without cover art */
     
     $scope.placeholder = '/images/artwork/place holder.png';
     
-    /* initializing the dropdown menu */
+    /*
+     * initializing the dropdown menu for both the
+     * albums and artists views
+     */
     
     $scope.orderProp = 'title';
-    $scope.songsViewOrderProp = 'title';
     $scope.options = ['Artist', 'Title', 'Year'];
-    $scope.sonsViewOptions = ['Album', 'Artist', 'Genre', 'Title'];
     $scope.reverse = false;
-    $scope.songsViewReverse = false;
     
     /* logic for the dropdown menu */
     
@@ -73,6 +111,15 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
           $scope.orderProp = 'title';
       }
     };
+    
+    /*
+    * initializing the dropdown menu for the 
+    * songs view
+    */
+    
+    $scope.songsViewOrderProp = 'title';
+    $scope.sonsViewOptions = ['Album', 'Artist', 'Genre', 'Title'];
+    $scope.songsViewReverse = false;
     
     /* songs view has slightly different options */
     
@@ -107,8 +154,9 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
     $scope.collection.$promise.then(function () {
       
       /* 
-       * creating an array of artists, this is
-       * for the artists view
+       * creating an array of artists, this
+       * provides the list of artists for the
+       * artists view
        */
       
       var artists = [];
@@ -117,16 +165,16 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
         artists.push($scope.collection[i].artist);
       }
       
-      /* filter duplicate atrists */
+      /* filtering duplicate atrists */
       
       $scope.artists = artists.filter(function (element, position) {
         return artists.indexOf(element) === position;
       });
       
       /* 
-       * creating an array of tracks, currently
-       * this is the only way I can think of to
-       * achive the songs view
+       * creating an array of tracks, this
+       * provides the list of tracks for the songs
+       * view
        */
       
       var tracks = [];
@@ -148,10 +196,25 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
       
     });
     
+    /* 
+     * resizes fixed views to maintain the current
+     * height of the window; takeing advatntage of
+     * screen realestate and ensuring they scroll
+     * properly
+     */
+    
+    $scope.fitToWindow = function (windowHeight) {
+      return {
+        position: 'fixed',
+        height: (windowHeight - 194) + 'px',
+        'overflow-y': 'scroll',
+        margin: '145px 0 0',
+      }
+    };
+    
     /*
-     * when the user selects an artist, populate
-     * an object with all the albums by that
-     * artist
+     * populates and object with albums by 
+     * a selected artist
      */
     
     $scope.viewAlbumsBy = function (artist) {
@@ -165,9 +228,7 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
       }
     };
     
-    /* clears the artist when the user selects
-     * all artists
-     */
+    /* clears the albums by artist */
     
     $scope.clearAlbumsByArtist = function () {
       $scope.albumsByArtist = '';
@@ -185,20 +246,49 @@ albumControllers.controller('retrieveCollectionController', ['$scope', 'albumRes
 
 albumControllers.controller('retrieveAlbumController', ['$scope', '$routeParams', 'albumResourceService',
   function ($scope, $routeParams, albumResourceService) {
-    $scope.album = albumResourceService.get({albumTitle: $routeParams.albumTitle}, function () {
-      console.log('Album retrieved');
-    });
+    
+    /* 
+     * if the collection has been populated just
+     * retreive the album from the collection 
+     */
+    
+    if($scope.collection.$resolved) {
+      for(i = 0; i < $scope.collection.length; i++) {        
+        if($scope.collection[i].title === $routeParams.albumTitle) {
+          $scope.album = $scope.collection[i];
+        }
+      }
+    }
+    
+    /*
+     * if the collection is unavailable go ahead 
+     * and reteive the album from the database
+     */
+    
+    else {
+      $scope.album = albumResourceService.get({albumTitle: $routeParams.albumTitle}, function () {
+        
+        console.log('Album retrieved');
+        
+      }, function (error) {
+        
+        console.log(error);
+        
+        /* 
+         * opening a modal to let the user know an
+         * error occurred
+         */
+        
+        $scope.openErrorModal(error, 'Unable to retrieve ' + $routeParams.albumTitle + ' from your collection.');
+        
+      });
+    }
   }
 ]);
 
-/**
-* Opens a modal for creating or updating an album.
-*
-* @param $modal    Service for creating AngularJS
-*                  modal windows.
-*
-* @see             ui.bootstrap.modal
-*/
+/*
+ * opens a modal for creating or updating an album
+ */
 
 albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
   function ($scope, $modal) {
@@ -206,8 +296,8 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
     $scope.updateAlbum = function () {
       
       /* 
-       * if the user is adding a new album 
-       * create an empty album object
+       * if a user is adding a new album to their
+       * collection create an empty album object
        */
       
       if($scope.isNewAlbum) {
@@ -232,13 +322,17 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
           },
           isNewAlbum : function () {
             return $scope.isNewAlbum;
+          },
+          openErrorModal : function () {
+            return $scope.openErrorModal;
           }
         }
       });
       
       /* 
        * after the user has saved their album 
-       * update the current scope
+       * update the current scope to avoid pulling
+       * the enitre collection from the server
        */
       
       modalInstance.result.then(function (album) {
@@ -246,12 +340,6 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
         if($scope.isNewAlbum) {
           $scope.collection.push(album);
         }
-        
-        /*
-         * instead of pulling down the entire
-         * collection from the server just update
-         * the scope
-         */
         
         else {
           
@@ -283,14 +371,16 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
   }
 ]);
 
-/* Updates an album in a collection */
+/* updates or creates an album in a collection */
 
-albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance', 'album', 'isNewAlbum', 'albumResourceService',
-  function ($scope, $modalInstance, album, isNewAlbum, albumResourceService) {
+albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance', 'album', 'isNewAlbum', 'openErrorModal', 'albumResourceService',
+  function ($scope, $modalInstance, album, isNewAlbum, openErrorModal, albumResourceService) {
     
     /* creating a modal title for the user */
     
     $scope.modalTitle = isNewAlbum ? 'Add Album' : 'Edit Album';
+    
+    /* initializing artwork */
     
     $scope.artwork = album.artwork;
     
@@ -316,14 +406,16 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
     }
     
     for(i = 0; i < album.tracks.length; i++) {
-       $scope.trackListing.tracks[i] = {track: album.tracks[i]};
+      $scope.trackListing.tracks[i] = {track: album.tracks[i]};
     }
+    
+    /* removes a track from the album */
     
     $scope.removeTrack = function (index) {
       
       /* 
        * if only a single track remains delete
-       * only its value so the user still has the
+       * its value so the user still has the
        * option to add more tracks
        */
       
@@ -339,12 +431,14 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
       
       else {
         for(i = index; i < $scope.trackListing.tracks.length - 1; i++) {
-            $scope.trackListing.tracks[i] = $scope.trackListing.tracks[i + 1];
-         }
-         
-          $scope.trackListing.tracks.pop(); 
+          $scope.trackListing.tracks[i] = $scope.trackListing.tracks[i + 1];
+        }
+        
+        $scope.trackListing.tracks.pop();
       }
     };
+    
+    /* adds a track to the album */
     
     $scope.addTrack = function (index) {
       
@@ -363,6 +457,10 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
     
     $scope.ok = function () {
       
+      /* begin the loading indicator */
+      
+      $scope.loading = true;
+      
       /* 
        * converting the track-listing back to an
        * array of strings
@@ -374,30 +472,80 @@ albumControllers.controller('updateAlbumController', ['$scope', '$modalInstance'
         }
       }
       
-      if(isNewAlbum) {
-        albumResourceService.save($scope.album);
-      }
+      /* 
+      * wrapping the database query in a three
+      * second timeout to simulate the delay of
+      * a real request
+      */
       
-      else {
+      setTimeout(function () {
         
-        /*
-         * preserving the original title becuase the
-         * database query is asynchronous and the
-         * scope will be updated before the callback
+        /* 
+         * if the user is creating a new album go 
+         * ahead and save it to the database
          */
         
-        var original = album.title;
-        
-        albumResourceService.get({albumTitle: original}, function () {
+        if(isNewAlbum) {
           
-          albumResourceService.update({albumTitle: original}, $scope.album);
-          
-          console.log('Album updated');
-        });
+          albumResourceService.save($scope.album).$promise.then(function () {
+            
+            console.log('album saved');
+            $modalInstance.close($scope.album);
+            
+          }, function (error) {
+            
+            console.log(error);
+            $modalInstance.dismiss('cancel');
+            
+            /* 
+             * opening a modal to let the user know an
+             * error occurred
+             */
+            
+            openErrorModal(error, 'Unable to save ' + $scope.album.title + ' to your collection.');
+            
+          });
+        }
         
-      }
-      
-      $modalInstance.close($scope.album);
+        else {
+          
+          albumResourceService.get({albumTitle: album.title}, function () {
+            
+            albumResourceService.update({albumTitle: album.title}, $scope.album).$promise.then(function () {
+              
+              console.log('Album updated');
+              $modalInstance.close($scope.album);
+              
+            }, function (error) {
+              
+              console.log(error);
+              $modalInstance.dismiss('cancel');
+              
+              /* 
+               * opening a modal to let the user know an
+               * error occurred
+               */
+              
+              openErrorModal(error, 'Unable to save changes to ' + $scope.album.title + '.');
+              
+            });
+            
+          }, function (error) {
+            
+            console.log(error);
+            $modalInstance.dismiss('cancel');
+            
+            /* 
+             * opening a modal to let the user know an
+             * error occurred
+             */
+            
+            openErrorModal(error, 'Unable to save changes to ' + $scope.album.title + '.');
+            
+          });
+          
+        }
+      }, 3000);
     };
     
     $scope.cancel = function () {
@@ -420,6 +568,9 @@ albumControllers.controller('removeAlbumModalController',  ['$scope', '$modal',
         resolve     : {
           album     : function () {
             return $scope.album;
+          },
+          openErrorModal : function () {
+            return $scope.openErrorModal;
           }
         }
       });
@@ -449,49 +600,80 @@ albumControllers.controller('removeAlbumModalController',  ['$scope', '$modal',
  *                    in the browser's address bar
  */
 
-albumControllers.controller('removeAlbumController', ['$scope', '$location', '$modalInstance', 'album', 'albumResourceService',
-  function ($scope, $location, $modalInstance, album, albumResourceService) {
+albumControllers.controller('removeAlbumController', ['$scope', '$location', '$modalInstance', 'album', 'openErrorModal', 'albumResourceService',
+  function ($scope, $location, $modalInstance, album, openErrorModal, albumResourceService) {
     
     $scope.album = album;
     
     $scope.ok = function () {
       
-      albumResourceService.delete({albumTitle: album.title}, function () {
-        
-        $location.path('#');
-        
-        console.log('Album removed');
-      });
+      /* begin the loading indicator */
       
-      $modalInstance.close(album);
+      $scope.loading = true;
+      
+      /* 
+       * wrapping the database query in a three
+       * second timeout to simulate a real
+       * request
+       */
+      
+      setTimeout(function () {
+        
+        albumResourceService.delete({albumTitle: album.title}).$promise.then(function () {
+          
+          $location.path('#');
+          console.log('Album removed');
+          $modalInstance.close(album);
+          
+        }, function (error) {
+          
+          console.log(error);
+          $modalInstance.dismiss('cancel');
+          
+          /* 
+           * opening a modal to let the user know an
+           * error occurred
+           */
+          
+          openErrorModal(error, 'Unable to remove ' + album.title + ' from your collection.');
+          
+        });
+        
+      }, 3000);
+      
     };
     
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
-    
   }
 ]);
 
-/* albums view controller */
+/* displays an error message to the user */
 
-albumControllers.controller('albumsViewController', ['$scope',
-  function ($scope) {
+albumControllers.controller('errorController', ['$scope', '$modalInstance', 'error', 'message',
+  function ($scope, $modalInstance, error, message) {
     
-    /* 
-     * resizes fixed views to fit the current
-     * window to take advatntage of screen
-     * realestate and to scroll properly
-     */
+    $scope.message = message;
     
-    $scope.fitToWindow = function () {
-      return {
-        position: 'fixed',
-        height: ($scope.height - 194) + 'px',
-        'overflow-y': 'scroll',
-        margin: '145px 0 0',
-        'background-color': '#f9f9f9'
-      }
+    if(error.status === 0) {
+      $scope.errorMessage = 'Communication with the server failed.';
+    }
+    
+    else if (error.data.userMessage) {
+      $scope.errorMessage = error.data.userMessage;
+    }
+    
+    else if (error.message) {
+      $scope.errorMessage = error.message;
+    }
+    
+    else {
+      $scope.errorMessage = 'An unknown error occurred.'
+    }
+    
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
     };
     
   }
@@ -503,8 +685,9 @@ albumControllers.controller('artistViewController', ['$scope',
   function ($scope) {
     
     /*
-     * if an artist is in scope return albums by
-     * that artist, else return all albums
+     * if the user selected an artist return
+     * albums by that artist, else return albums
+     * by all arists
      */
     
     $scope.getAlbums = function () {
@@ -533,57 +716,6 @@ albumControllers.controller('artistViewController', ['$scope',
       $scope.toggled = !$scope.toggled;
     }
     
-    /* fits the view to the window when resized */
-    
-    $scope.fitToWindow = function () {
-      return {
-        position: 'fixed',
-        height: ($scope.height - 194) + 'px',
-        'overflow-y': 'scroll',
-        margin: '145px 0 0',
-        'background-color': '#f9f9f9'
-      }
-    };
-    
-  }
-]);
-
-/* songs view controller */
-
-albumControllers.controller('songsViewController', ['$scope',
-  function ($scope) {
-    
-    /* fits the view to the window when resized */
-    
-    $scope.fitToWindow = function () {
-      return {
-        position: 'fixed',
-        height: ($scope.height - 194) + 'px',
-        'overflow-y': 'scroll',
-        margin: '145px 0 0',
-        'background-color': '#f9f9f9'
-      }
-    };
-    
-  }
-]);
-
-/* album view controller */
-
-albumControllers.controller('albumViewController', ['$scope',
-  function ($scope) {
-    
-    /* fits the view to the window when resized */
-    
-    $scope.fitToWindow = function () {
-      return {
-        position: 'fixed',
-        height: ($scope.height - 194) + 'px',
-        'overflow-y': 'scroll',
-        margin: '145px 0 0',
-      }
-    };
-    
   }
 ]);
 
@@ -593,7 +725,7 @@ albumControllers.controller('inputValidationController', ['$scope',
   function ($scope) {
     
     /* 
-     * force the user to enter numeric characters
+     * forces the user to enter numeric characters
      * for the year
      */
     

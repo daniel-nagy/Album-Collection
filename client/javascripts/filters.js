@@ -2,10 +2,7 @@
 
 var albumFilters = angular.module('albumFilters', []);
 
-/*
- * wraps parentheses around the year for better
- * visualization
- */
+/* wraps parentheses around the year */
 
 albumFilters.filter('yearFilter', function () {
   return function (input) {

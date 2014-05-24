@@ -20,8 +20,8 @@
 </div>
 
 <!-- songs view -->
-<div ng-controller="songsViewController" ng-style="fitToWindow()" window-height>
-  <table class="table songs-view">
+<div class="songs-view" ng-style="fitToWindow(height)" window-height>
+  <table class="table">
     <tbody>
       <tr ng-repeat="track in tracks | filter:query | orderBy:songsViewOrderProp:songsViewReverse">
         <td>

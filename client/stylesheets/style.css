@@ -61,6 +61,7 @@ a:active {
 
 .table {
   margin: 0;
+  /* background-color: #f9f9f9; */
 }
 
 .table > thead > tr > th,
@@ -75,7 +76,7 @@ a:active {
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: transparent;
-  color: #fb007a;
+  color: #008ec4;
   cursor: pointer;
 }
 
@@ -124,6 +125,13 @@ a:active {
   border-radius: 0 0 6px 6px;
   background-color: #f9f8f4;
   border-top: 1px #cdcdcd solid;
+}
+
+/*---------------------------------------------------------*/
+/* buttons */
+
+.btn {
+  font-size: 16px;
 }
 
 /*---------------------------------------------------------*/
@@ -206,6 +214,7 @@ a:active {
 
 .albums-view {
   padding: 0 0 20px;
+  background-color: #f9f9f9;
 }
 
 .albums-view .thumbnail {
@@ -225,6 +234,7 @@ a:active {
 
 .artist-list-container {
   max-width: 30%;
+  background-color: #f9f9f9;
 }
 
 .artist-list,
@@ -274,6 +284,7 @@ a:active {
   max-width: 70%;
   right: 0;
   border-left: 1px #cdcdcd solid;
+  background-color: #f9f9f9;
 }
 
 .albums-by-artist {
@@ -357,15 +368,19 @@ a:active {
 /* songs view */
 
 .songs-view {
+  background-color: #f9f9f9;
+}
+
+.songs-view .table {
   table-layout: fixed;
 }
 
-.songs-view > tbody > tr > td {
+.songs-view .table > tbody > tr > td {
   border-bottom: 1px #cdcdcd solid;
   vertical-align: middle;
 }
 
-.songs-view td:nth-child(1) {
+.songs-view .table td:nth-child(1) {
   width: 130px;
   padding-left: 20px;
 }
@@ -397,11 +412,11 @@ a:active {
 }
 
 @media screen and (max-width: 768px) {
-  .songs-view td:nth-child(3) {
+  .songs-view .table td:nth-child(3) {
     display: none;
   }
   
-  .songs-view td:nth-child(1) {
+  .songs-view .table td:nth-child(1) {
     width: 100px;
     padding-left: 15px;
   }
@@ -477,7 +492,6 @@ a:active {
 
 @media screen and (max-width: 768px) {
   .album-view {
-    position: relative;
     table-layout: fixed;
   }
   
@@ -513,11 +527,13 @@ a:active {
 /*---------------------------------------------------------*/
 /* remove album view */
 
+.error-modal .modal-body,
 .remove-album .modal-body {
   font-size: 16px;
   padding: 40px 20px;
 }
 
+.error-modal .modal-body p,
 .remove-album .modal-body p {
   display: inline;
 }
@@ -632,10 +648,14 @@ a:active {
   text-overflow: ellipsis;
 }
 
-.update-album input:hover,
-.update-album input:focus {
-  color: #fb007a;
+.update-album input:hover {
+  color: #008ec4;
   cursor: pointer;
+}
+
+.update-album input:focus {
+  color: #1daae5;
+  cursor: text;
 }
 
 .update-album .track-listing {
@@ -657,4 +677,48 @@ a:active {
 
 .update-album .add-remove-track a {
   width: 7%;
+}
+
+/*---------------------------------------------------------*/
+/* error modal */
+
+.error-modal .modal-header {
+  background-color: #FB5856;
+  border-bottom-color: #DD383E;
+}
+
+.user-message {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+
+.error-message {
+  display: inline;
+  color: #FB5856;
+}
+
+/*---------------------------------------------------------*/
+/* loading indicator */
+
+.loading-indicator {
+  position: fixed;
+  bottom: 0; left: 0;
+  height: 34px;
+  width: 34px;
+  margin: 0 0 20px 20px;
+  border-bottom: 4px solid #cdcdcd;
+  border-left: 4px solid #cdcdcd;
+  border-right: 4px solid #cdcdcd;
+  border-top: 4px solid #008ec4;
+  border-radius: 100%;
+  -webkit-animation: spin 0.6s linear infinite;
+  }
+  
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
 }

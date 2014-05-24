@@ -20,8 +20,8 @@
 </div>
 
 <!-- artist view -->
-<div class="artist-view" ng-controller="artistViewController" ng-init="toggled = false" window-height>
-  <div class="artist-list-container" ng-style="fitToWindow()">
+<div class="artist-view" ng-init="toggled = false" window-height>
+  <div class="artist-list-container" ng-style="fitToWindow(height)">
     
     <!-- artists lists -->
     <table class="table artist-list table-hover col-xs-12 col-sm-12 col-md-12">
@@ -31,7 +31,7 @@
         </td>
         <tr ng-repeat="artist in artists | filter:query | orderBy:'toString()'">
           <td ng-click="viewAlbumsBy(artist)">
-            <div>{{artist}}</div>
+            <div ng-style="albumsByArtist && albumsByArtist[0].artist === artist && {color: '#1daae5'}">{{artist}}</div>
           </td>
         </tr>
       </tbody>
@@ -39,7 +39,7 @@
     
   </div>
   
-  <div class="albums-by-artist-container" ng-class="{'move-on-toggle' : toggled}" ng-style="fitToWindow()">
+  <div class="albums-by-artist-container" ng-class="{'move-on-toggle' : toggled}" ng-style="fitToWindow(height)">
     
     <!-- album artist and album count -->
     <div class="album-artist-container col-xs-12 col-sm-12 col-md-12">
