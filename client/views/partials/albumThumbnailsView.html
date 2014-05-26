@@ -25,7 +25,7 @@
   <!--create album -->
   <span class="col-xs-4 col-sm-3 col-md-2" ng-init="isNewAlbum = true;">
     <a class="thumbnail" ng-controller="updateAlbumModalController" ng-click="updateAlbum()" href>
-      <img ng-src="/images/artwork/add-album.png">
+      <img ng-src="/images/artwork/add-album.png"/>
     </a>
   </span>
   
@@ -33,7 +33,7 @@
     
     <!-- album thumbnails -->
     <a class="thumbnail" href="#/albums/{{album.title}}">
-      <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}">
+      <img ng-src="{{album.artwork}}" place-holder="{{placeholder}}"/>
     </a>
     
     <!-- album and artist -->

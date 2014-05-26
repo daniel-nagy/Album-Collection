@@ -1,13 +1,4 @@
 /* Album Collection Controllers */
-
-/*
- * My Todo List
- *
- * - When an album is created, updated, or removed
- *   update the artist and tracks arrays to
- *   compensate for these actions without having
- *   to pull down the collection from the server.
- */
  
 var albumControllers = angular.module('albumControllers', []);
 
@@ -213,7 +204,7 @@ albumControllers.controller('mainController', ['$scope', '$modal', 'albumResourc
     };
     
     /*
-     * populates and object with albums by 
+     * populates an object with albums by 
      * a selected artist
      */
     
@@ -339,11 +330,63 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
         
         if($scope.isNewAlbum) {
           $scope.collection.push(album);
+          
+          /* 
+           * if it's a new artist push the artist
+           * onto the current list of artists
+           */
+          
+          var newArtist = true;
+          
+          for(i = 0; i < $scope.artists.length; i++) {
+            if($scope.artists[i] === album.artist) {
+              newArtist = false;
+              break;
+            }
+          }
+          
+          if(newArtist) {
+            $scope.artists.push(album.artist);
+          }
+          
+          /* 
+           * if the artist view is currently 
+           * displaying albums by this artist
+           * update the artist view
+           */
+          
+          if($scope.albumsByArtist && $scope.albumsByArtist[0].artist === album.artist) {
+            $scope.viewAlbumsBy(album.artist);
+          }
+          
+          /*
+           * pushing new tracks onto the current
+           * list of tracks
+           */
+          
+          for(i = 0; i < album.tracks.length; i++) {
+            $scope.tracks.push({
+              title   : album.tracks[i],
+              album   : album.title,
+              artist  : album.artist,
+              genre   : album.genre,
+              year    : album.year,
+              artwork : album.artwork
+            });
+          }
         }
         
         else {
           
-          var original = $scope.album.title ;
+          /* 
+           * making a copy of the original album
+           * title and tracklisting
+           */
+          
+          var originalTitle = $scope.album.title;
+          var originalTracks = $scope.album.tracks;
+          
+          /* updating the current scope */
           
           $scope.album.title = album.title;
           $scope.album.artist = album.artist;
@@ -352,8 +395,10 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
           $scope.album.artwork = album.artwork;
           $scope.album.year = album.year;
           
+          /* updating the root scope */
+          
           for(i = 0; i < $scope.collection.length; i++) {
-            if($scope.collection[i].title === original) {
+            if($scope.collection[i].title === originalTitle) {
               
               $scope.collection[i].title = album.title;
               $scope.collection[i].artist = album.artist;
@@ -365,7 +410,57 @@ albumControllers.controller('updateAlbumModalController',  ['$scope', '$modal',
               break;
             }
           }
+          
+          /* updating new tracks */
+          
+          for(i = 0; i < album.tracks.length; i++) {
+            
+            var notSeen = true;
+            
+            for(j = 0; j < originalTracks.length; j++) {
+              if(originalTracks[j] === album.tracks[i]) {
+                notSeen = false;
+                break;
+              }
+            }
+            
+            if(notSeen) {
+              $scope.tracks.push({
+                title   : album.tracks[i],
+                album   : album.title,
+                artist  : album.artist,
+                genre   : album.genre,
+                year    : album.year,
+                artwork : album.artwork
+              });
+            }
+          }
+          
+          /* updating old tracks */
+          
+          for(i = 0; i < originalTracks.length; i++) {
+            
+            var notSeen = true;
+            
+            for(j = 0; j < album.tracks.length; j++) {
+              if(album.tracks[j] === originalTracks[i]) {
+                notSeen = false;
+                break;
+              }
+            }
+            
+            if(notSeen) {
+              for(k = 0; k < $scope.tracks.length; k++) {
+                if($scope.tracks[k].title === originalTracks[i]) {
+                  $scope.tracks.splice(k, 1);
+                  break;
+                }
+              }
+            }
+          }
+          
         }
+        
       });
     };
   }
@@ -584,10 +679,62 @@ albumControllers.controller('removeAlbumModalController',  ['$scope', '$modal',
         
         for(i = 0; i < $scope.collection.length; i++) {
           if($scope.collection[i].title === album.title) {
-            $scope.collection.splice(i,1);
+            $scope.collection.splice(i, 1);
             break;
           }
         }
+        
+        /* 
+         * if no more albums by this artist remain
+         * remove this artist from the list of 
+         * artists
+         */
+        
+        var notSeen = true;
+        
+        for(i = 0; i < $scope.collection.length; i++) {
+          if($scope.collection[i].artist === album.artist) {
+            notSeen = false;
+            break;
+          }
+        }
+        
+        if(notSeen) {
+          for(i = 0; i < $scope.artists.length; i++) {
+            if($scope.artists[i] === album.artist) {
+              $scope.artists.splice(i, 1);
+            }
+          }
+        }
+        
+        /* 
+         * if the artist view is currently 
+         * displaying albums by this artist
+         * update the artist view
+         */
+        
+        if($scope.albumsByArtist && $scope.albumsByArtist[0].artist === album.artist && !notSeen) {
+          $scope.viewAlbumsBy(album.artist);
+        }
+        
+        else if ($scope.albumsByArtist && $scope.albumsByArtist[0].artist === album.artist) {
+          $scope.clearAlbumsByArtist();
+        }
+        
+        /* 
+         * remove this album's tracks from the
+         * list of tracks
+         */
+        
+        for(i = 0; i < album.tracks.length; i++) {
+          for(j = 0; j < $scope.tracks.length; j++) {
+            if($scope.tracks[j].title === album.tracks[i]) {
+              $scope.tracks.splice(j, 1);
+              break;
+            }
+          }
+        }
+        
       });
     };
   }

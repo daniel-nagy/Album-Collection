@@ -16,6 +16,24 @@ albumDirectives.directive('placeHolder', function () {
   };
 });
 
+/* 
+ * launches HTML5's file selection window, this
+ * allows me to use pretty bootstrap buttons to
+ * upload files opposed to the non-themeable HTML5
+ * buttons
+ */
+
+albumDirectives.directive('launchWindow', function () {
+  
+  return {
+    link: function (scope, element) {
+      element.bind('click', function () {
+        this.nextElementSibling.click();
+      });
+    }
+  };
+});
+
 /* upload album cover art */
 
 albumDirectives.directive('fileUpload', function () {
@@ -45,19 +63,19 @@ albumDirectives.directive('droppable', function () {
           event.preventDefault();
         }
         
-        this.classList.add('drop-zone');
+        this.className = 'drop-zone';
         
       }, false);
       
       element[0].addEventListener('dragenter', function () {
         
-        this.classList.add('drop-zone');
+        this.className = 'drop-zone';
         
       }, false);
       
       element[0].addEventListener('dragleave', function () {
         
-        this.classList.remove('drop-zone');
+        this.className = 'upload-cell';
         
       }, false);
       
@@ -74,7 +92,7 @@ albumDirectives.directive('droppable', function () {
         scope.file = event.dataTransfer.files[0];
         scope.uploadFile();
         
-        this.classList.remove('drop-zone');
+        this.className = 'upload-cell';
         
       }, false);
     }

@@ -13,47 +13,36 @@
       <tbody>
         <tr>
           <td class="col-xs-12 col-sm-12 col-md-12" ng-controller="inputValidationController">
-            
-            <!-- update album art -->
-            <div class="update-album-art-container" ng-controller="fileUploadController">
+            <div class="upload-container" ng-controller="fileUploadController">
               
               <!-- album art -->
-              <img class="thumbnail update-album-art" ng-src="{{artwork}}" place-holder="{{placeholder}}">
+              <img class="thumbnail" ng-src="{{artwork}}" place-holder="{{placeholder}}"/>
               
-              <!-- upload -->
-              <div class="upload-cell">
+              <!-- upload album art -->
+              <div class="upload-cell" droppable>
                 
-                <!-- drop-zone -->
-                <div class="upload-album-art" ng-init="file.name = 'Drop Artwork';" droppable>
-                  
-                  <span>
-                    
-                    <p>{{file.name}}</p>
-                    
-                    <!-- upload button -->
-                    <div class="btn btn-success upload-btn">
-                      Uplaod File <input type="file" file-upload="onFileSelect($files)">
-                    </div>
-                    
-                    <!-- upload progress -->
-                    <progressbar class="progress-striped active" max="1" value="progress" type="success"></progressbar>
-                    
-                  </span>
-                  
-                </div>
+                <p>{{file.name ? file.name : 'Drop Artwork'}}</p>
+                
+                <!-- upload button -->
+                <button class="btn btn-success" launch-window>Uplaod File</button>
+                <input type="file" file-upload="onFileSelect($files)" id="fileInput"/>
+                
+                <!-- upload progress -->
+                <progressbar class="progress-striped active" max="1" value="progress" type="success"></progressbar>
+                
               </div>
             </div>
             
             <!-- album information -->
-            <input class="title" type="text" placeholder="Title" ng-model="album.title">
-            <input class="artist" type="text" placeholder="Artist" ng-model="album.artist">
-            <input class="genre" type="text" placeholder="Genre" ng-model="album.genre">
-            <input class="year" type="text" ng-keypress="keyValidate($event)" maxlength="4" placeholder="Year" ng-model="album.year">
+            <input class="title" type="text" placeholder="Title" ng-model="album.title"/>
+            <input class="artist" type="text" placeholder="Artist" ng-model="album.artist"/>
+            <input class="genre" type="text" placeholder="Genre" ng-model="album.genre"/>
+            <input class="year" type="text" ng-keypress="keyValidate($event)" maxlength="4" placeholder="Year" ng-model="album.year"/>
             
             <!-- tracklisting -->
             <ol class="track-listing col-xs-12 col-sm-12 col-md-12">
               <li ng-repeat="tracks in trackListing.tracks">
-                <input type="text" placeholder="Track {{$index + 1}}" ng-model="tracks.track">
+                <input type="text" placeholder="Track {{$index + 1}}" ng-model="tracks.track"/>
                 <span class="add-remove-track">
                   <a class="glyphicon glyphicon-minus" ng-click="removeTrack($index)" href></a>
                   <a class="glyphicon glyphicon-plus" ng-click="addTrack($index)" href></a>
