@@ -334,7 +334,6 @@ a:active {
   
   .albums-by-artist-container {
     min-width: 100%;
-    transition: all  0.5s;
   }
   
   .move-on-toggle {
@@ -562,8 +561,7 @@ a:active {
   width: 300px;
 }
 
-.upload-cell,
-.drop-zone {
+.upload-cell {
   position: relative;
   display: table-cell;
   height: 300px;
@@ -579,11 +577,10 @@ a:active {
   vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: all 0.5s;
+  opacity: 0;
 }
 
 .upload-cell input[type=file],
-.drop-zone input[type=file],
 .drop-zone p,
 .drop-zone .btn,
 .drop-zone .btn-success,
@@ -591,11 +588,19 @@ a:active {
   display: none;
 }
 
-.upload-cell {
+.upload-cell p,
+.upload-cell .btn,
+.upload-cell .btn-success,
+.upload-cell .progress-striped {
   opacity: 0;
 }
 
-.upload-cell:hover {
+.upload-cell:hover,
+.upload-cell:hover p,
+.upload-cell:hover .btn,
+.upload-cell:hover .btn-success,
+.upload-cell:hover .progress-striped,
+.drop-zone {
   opacity: 1;
 }
 
@@ -697,14 +702,4 @@ a:active {
   border-right: 4px solid #cdcdcd;
   border-top: 4px solid #008ec4;
   border-radius: 100%;
-  -webkit-animation: spin 0.6s linear infinite;
   }
-  
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(359deg);
-  }
-}

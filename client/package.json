@@ -9,7 +9,9 @@
     "bower"                 : "*",
     "karma"                 : "*",
     "karma-jasmine"         : "^0.1.5",
-    "karma-safari-launcher" : "^0.1.1"
+    "karma-safari-launcher" : "^0.1.1",
+    "uglify-js"             : "*",
+    "clean-css"             : "*"
   },
   "scripts"                 : {
     "start"                 : "http-server -p 8000 ./",

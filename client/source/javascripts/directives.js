@@ -63,19 +63,19 @@ albumDirectives.directive('droppable', function () {
           event.preventDefault();
         }
         
-        this.className = 'drop-zone';
+        this.classList.add('drop-zone');
         
       }, false);
       
       element[0].addEventListener('dragenter', function () {
         
-        this.className = 'drop-zone';
+        this.classList.add('drop-zone');
         
       }, false);
       
       element[0].addEventListener('dragleave', function () {
         
-        this.className = 'upload-cell';
+        this.classList.remove('drop-zone');
         
       }, false);
       
@@ -92,7 +92,7 @@ albumDirectives.directive('droppable', function () {
         scope.file = event.dataTransfer.files[0];
         scope.uploadFile();
         
-        this.className = 'upload-cell';
+        this.classList.remove('drop-zone');
         
       }, false);
     }
